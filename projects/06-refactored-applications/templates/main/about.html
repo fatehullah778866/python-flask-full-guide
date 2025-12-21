@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}About - My Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="about-content">
+        <h1>About This Application</h1>
+        <p>This is a refactored Flask application demonstrating professional project structure.</p>
+        
+        <h2>What is Refactoring?</h2>
+        <p>Refactoring means improving code structure without changing what it does. This application uses:</p>
+        
+        <ul>
+            <li><strong>Application Factory Pattern</strong> - Better way to create Flask apps</li>
+            <li><strong>Blueprints</strong> - Organize routes into modules</li>
+            <li><strong>Configuration Management</strong> - Separate settings for different environments</li>
+            <li><strong>Error Handling</strong> - Custom error pages</li>
+            <li><strong>Professional Structure</strong> - Organized file and folder structure</li>
+        </ul>
+        
+        <h2>Project Structure</h2>
+        <pre>
+app/
+├── __init__.py      # Application factory
+├── models.py        # Database models
+├── config.py        # Configuration
+├── main/            # Main blueprint
+├── posts/           # Posts blueprint
+└── auth/            # Auth blueprint
+        </pre>
+    </div>
+</div>
+{% endblock %}
+

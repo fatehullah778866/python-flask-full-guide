@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Welcome to My Blog</h1>
+        <p>A refactored Flask application using blueprints and application factory pattern!</p>
+        <div class="actions">
+            <a href="{{ url_for('posts.list_posts') }}" class="btn">View Posts</a>
+            <a href="{{ url_for('posts.create_post') }}" class="btn">Create Post</a>
+        </div>
+    </div>
+    
+    <div class="features">
+        <h2>Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Application Factory</h3>
+                <p>Uses factory pattern for better app creation and testing</p>
+            </div>
+            <div class="feature-card">
+                <h3>Blueprints</h3>
+                <p>Organized code into separate modules (main, posts, auth)</p>
+            </div>
+            <div class="feature-card">
+                <h3>Configuration</h3>
+                <p>Separate configuration for development and production</p>
+            </div>
+            <div class="feature-card">
+                <h3>Error Handling</h3>
+                <p>Custom error pages for 404 and 500 errors</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

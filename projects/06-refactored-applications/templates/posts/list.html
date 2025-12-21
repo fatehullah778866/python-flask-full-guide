@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Posts - My Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>All Posts</h1>
+        <a href="{{ url_for('posts.create_post') }}" class="btn">Create New Post</a>
+    </div>
+    
+    {% if posts %}
+        <div class="posts">
+            {% for post in posts %}
+                <div class="post-card">
+                    <h2><a href="{{ url_for('posts.view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                    <div class="post-meta">
+                        <span class="author">By {{ post.author }}</span>
+                        <span class="date">{{ post.date_created.strftime('%B %d, %Y') }}</span>
+                    </div>
+                    <p class="content-preview">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+                    <div class="actions">
+                        <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="btn-small">Read More</a>
+                        <a href="{{ url_for('posts.edit_post', post_id=post.id) }}" class="btn-small">Edit</a>
+                        <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                            <button type="submit" class="btn-small danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-posts">
+            <p>No posts yet!</p>
+            <a href="{{ url_for('posts.create_post') }}" class="btn">Create First Post</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
