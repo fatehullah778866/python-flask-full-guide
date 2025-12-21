@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Messages - Contact Form{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Received Messages</h1>
+    
+    {% if messages %}
+        <p class="subtitle">You have {{ messages|length }} message(s)</p>
+        
+        <div class="messages-list">
+            {% for msg in messages %}
+                <div class="message-card">
+                    <div class="message-header">
+                        <h3>{{ msg.name }}</h3>
+                        <span class="timestamp">{{ msg.timestamp[:19].replace('T', ' ') }}</span>
+                    </div>
+                    <p class="email">
+                        <strong>Email:</strong> 
+                        <a href="mailto:{{ msg.email }}">{{ msg.email }}</a>
+                    </p>
+                    <div class="message-content">
+                        <strong>Message:</strong>
+                        <p>{{ msg.message }}</p>
+                    </div>
+                    {% if msg.filename %}
+                        <div class="file-attachment">
+                            <strong>Attachment:</strong> 
+                            <a href="{{ url_for('static', filename='uploads/' + msg.filename) }}" target="_blank" class="file-link">
+                                📎 {{ msg.filename }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-messages">
+            <p>No messages yet!</p>
+            <p>Be the first to send a message.</p>
+        </div>
+    {% endif %}
+    
+    <div class="actions">
+        <a href="/contact" class="btn">Send New Message</a>
+    </div>
+</div>
+{% endblock %}
+
