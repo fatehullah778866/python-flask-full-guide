@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Secure Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Secure Blog Application</h1>
+        <p>This application demonstrates security best practices including password hashing, CSRF protection, and input validation.</p>
+    </div>
+    
+    <div class="security-features">
+        <h2>Security Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🔐 Password Hashing</h3>
+                <p>Passwords are hashed using Werkzeug - never stored in plain text!</p>
+            </div>
+            <div class="feature-card">
+                <h3>🛡️ CSRF Protection</h3>
+                <p>All forms are protected with CSRF tokens to prevent fake requests.</p>
+            </div>
+            <div class="feature-card">
+                <h3>✅ Input Validation</h3>
+                <p>All user input is validated and sanitized before use.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🔒 Secure Sessions</h3>
+                <p>Sessions are protected with secure cookie settings.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🚫 XSS Prevention</h3>
+                <p>Jinja2 automatically escapes content to prevent XSS attacks.</p>
+            </div>
+            <div class="feature-card">
+                <h3>🗄️ SQL Injection Prevention</h3>
+                <p>SQLAlchemy prevents SQL injection attacks automatically.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="posts-section">
+        <h2>Recent Posts</h2>
+        {% if posts %}
+            <div class="posts">
+                {% for post in posts %}
+                    <div class="post-card">
+                        <h3><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                        <p class="author">By {{ post.author }}</p>
+                        <p class="date">{{ post.date_created.strftime('%B %d, %Y') }}</p>
+                        <p class="content-preview">{{ post.content[:150] }}{% if post.content|length > 150 %}...{% endif %}</p>
+                        <a href="{{ url_for('view_post', post_id=post.id) }}" class="btn-small">Read More</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No posts yet. <a href="{{ url_for('register') }}">Register</a> and create your first post!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
