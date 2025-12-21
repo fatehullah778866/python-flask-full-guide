@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}My Projects - My Portfolio{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="projects">
+        <h1>My Projects</h1>
+        <div class="projects-grid">
+            <!-- Project Card 1 -->
+            <div class="project-card">
+                <h3>Project 1: Personal Portfolio</h3>
+                <p>This very website! Built with Flask and Python. A beautiful portfolio to showcase my work.</p>
+                <a href="#" class="btn">View Project</a>
+            </div>
+            <!-- Project Card 2 -->
+            <div class="project-card">
+                <h3>Project 2: Todo App</h3>
+                <p>A simple todo application to manage tasks. Built with Flask and SQLite database.</p>
+                <a href="#" class="btn">View Project</a>
+            </div>
+            <!-- Project Card 3 -->
+            <div class="project-card">
+                <h3>Project 3: Weather App</h3>
+                <p>An app that shows weather information. Uses API to fetch real-time weather data.</p>
+                <a href="#" class="btn">View Project</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
