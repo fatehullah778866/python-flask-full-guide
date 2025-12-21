@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #messages {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        .username {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .timestamp {
+            color: #999;
+            font-size: 0.8em;
+        }
+        .system {
+            color: #666;
+            font-style: italic;
+        }
+        #messageInput {
+            width: 70%;
+            padding: 5px;
+        }
+        #username {
+            width: 20%;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 15px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebSocket Chat Room</h1>
+    <div id="messages"></div>
+    <div>
+        <input type="text" id="username" placeholder="Your name">
+        <button onclick="joinChat()">Join Chat</button>
+    </div>
+    <div>
+        <input type="text" id="messageInput" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        const socket = io();
+        let username = '';
+        let joined = false;
+        
+        socket.on('connect', function() {
+            console.log('Connected to server');
+            addMessage('System', 'Connected to chat server!', 'system');
+        });
+        
+        socket.on('disconnect', function() {
+            addMessage('System', 'Disconnected from server', 'system');
+        });
+        
+        socket.on('status', function(data) {
+            addMessage('System', data.msg, 'system');
+        });
+        
+        socket.on('message', function(data) {
+            addMessage(data.username, data.message, 'user', data.timestamp);
+        });
+        
+        socket.on('user_joined', function(data) {
+            addMessage('System', `${data.username} joined the chat!`, 'system');
+        });
+        
+        socket.on('user_left', function(data) {
+            addMessage('System', `${data.username} left the chat`, 'system');
+        });
+        
+        socket.on('typing', function(data) {
+            // Could show typing indicator here
+        });
+        
+        function joinChat() {
+            const nameInput = document.getElementById('username');
+            username = nameInput.value.trim();
+            if (username && !joined) {
+                socket.emit('join', {username: username});
+                joined = true;
+                nameInput.disabled = true;
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (message && joined) {
+                socket.emit('message', {message: message});
+                input.value = '';
+            } else if (!joined) {
+                alert('Please join the chat first!');
+            }
+        }
+        
+        // Send message on Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function addMessage(user, msg, type, timestamp) {
+            const div = document.createElement('div');
+            div.className = 'message';
+            const time = timestamp ? `<span class="timestamp">[${timestamp}]</span> ` : '';
+            const userClass = type === 'system' ? 'system' : 'username';
+            div.innerHTML = `${time}<span class="${userClass}">${user}:</span> ${msg}`;
+            document.getElementById('messages').appendChild(div);
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        }
+    </script>
+</body>
+</html>
+
