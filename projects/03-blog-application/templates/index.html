@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Home - My Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>My Blog</h1>
+        <a href="/create" class="btn">Create New Post</a>
+    </div>
+    
+    {% if posts %}
+        <div class="posts">
+            {% for post in posts %}
+                <div class="post-card">
+                    <h2><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
+                    <div class="post-meta">
+                        <span class="author">By {{ post.author }}</span>
+                        <span class="date">{{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                    </div>
+                    <p class="content-preview">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+                    <div class="actions">
+                        <a href="/post/{{ post.id }}" class="btn-small">Read More</a>
+                        <a href="/edit/{{ post.id }}" class="btn-small">Edit</a>
+                        <form action="/delete/{{ post.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                            <button type="submit" class="btn-small danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-posts">
+            <p>No posts yet!</p>
+            <p>Create your first blog post to get started.</p>
+            <a href="/create" class="btn">Create First Post</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
