@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployed Flask App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🚀 Deployed Flask Application</h1>
+            <p>Congratulations! Your Flask app is now live on the internet!</p>
+        </div>
+        
+        <div class="info-section">
+            <h2>Application Information</h2>
+            <div class="info-cards">
+                <div class="info-card">
+                    <h3>Status</h3>
+                    <p class="status online">Online</p>
+                </div>
+                <div class="info-card">
+                    <h3>Environment</h3>
+                    <p>{{ 'Production' if not config.DEBUG else 'Development' }}</p>
+                </div>
+                <div class="info-card">
+                    <h3>Version</h3>
+                    <p>1.0.0</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features-section">
+            <h2>Deployment Features</h2>
+            <ul class="features-list">
+                <li>✅ Production-ready configuration</li>
+                <li>✅ Environment variables for secrets</li>
+                <li>✅ Gunicorn WSGI server</li>
+                <li>✅ Health check endpoint</li>
+                <li>✅ Error handling</li>
+                <li>✅ Security headers</li>
+            </ul>
+        </div>
+        
+        <div class="api-section">
+            <h2>API Endpoints</h2>
+            <div class="endpoints">
+                <div class="endpoint">
+                    <code>GET /api/health</code>
+                    <p>Health check endpoint</p>
+                </div>
+                <div class="endpoint">
+                    <code>GET /api/info</code>
+                    <p>Application information</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="deployment-info">
+            <h2>Deployment Platforms</h2>
+            <p>This app can be deployed to:</p>
+            <ul>
+                <li><strong>Heroku</strong> - Popular and easy</li>
+                <li><strong>Railway</strong> - Modern and developer-friendly</li>
+                <li><strong>Render</strong> - Simple with good free tier</li>
+                <li><strong>Fly.io</strong> - Global deployment</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

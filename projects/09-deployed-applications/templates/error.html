@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{ error_code }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="error-page">
+            <h1>{{ error_code }}</h1>
+            <h2>{{ error_message }}</h2>
+            <a href="{{ url_for('home') }}" class="btn">Go Home</a>
+        </div>
+    </div>
+</body>
+</html>
+
