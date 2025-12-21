@@ -13,16 +13,17 @@ def test_index_route(client):
     
     # Check response
     assert response.status_code == 200
-    assert b'Welcome' in response.data or response.data  # Page loaded
+    assert response.data  # Page loaded (has content)
 
-def test_get_posts_api(client, db_session):
+def test_get_posts_api(client, test_app):
     """Test GET /api/posts endpoint"""
-    # Create some test posts
-    post1 = Post(title='Post 1', content='Content 1')
-    post2 = Post(title='Post 2', content='Content 2')
-    
-    db_session.session.add_all([post1, post2])
-    db_session.session.commit()
+    with test_app.app_context():
+        # Create some test posts
+        post1 = Post(title='Post 1', content='Content 1')
+        post2 = Post(title='Post 2', content='Content 2')
+        
+        db.session.add_all([post1, post2])
+        db.session.commit()
     
     # Make GET request
     response = client.get('/api/posts')
@@ -34,15 +35,17 @@ def test_get_posts_api(client, db_session):
     assert data[0]['title'] == 'Post 1'
     assert data[1]['title'] == 'Post 2'
 
-def test_get_single_post_api(client, db_session):
+def test_get_single_post_api(client, test_app):
     """Test GET /api/posts/<id> endpoint"""
-    # Create a post
-    post = Post(title='Test Post', content='Test content')
-    db_session.session.add(post)
-    db_session.session.commit()
+    with test_app.app_context():
+        # Create a post
+        post = Post(title='Test Post', content='Test content')
+        db.session.add(post)
+        db.session.commit()
+        post_id = post.id
     
     # Make GET request
-    response = client.get(f'/api/posts/{post.id}')
+    response = client.get(f'/api/posts/{post_id}')
     
     # Check response
     assert response.status_code == 200
@@ -50,7 +53,7 @@ def test_get_single_post_api(client, db_session):
     assert data['title'] == 'Test Post'
     assert data['content'] == 'Test content'
 
-def test_create_post_api(client, db_session):
+def test_create_post_api(client, test_app):
     """Test POST /api/posts endpoint"""
     # Post data
     post_data = {
@@ -72,9 +75,10 @@ def test_create_post_api(client, db_session):
     assert data['title'] == 'New Post'
     
     # Check post was saved to database
-    post = Post.query.first()
-    assert post.title == 'New Post'
-    assert post.content == 'New content'
+    with test_app.app_context():
+        post = Post.query.first()
+        assert post.title == 'New Post'
+        assert post.content == 'New content'
 
 def test_create_post_missing_title(client):
     """Test POST /api/posts without title (should fail)"""
@@ -95,12 +99,14 @@ def test_create_post_missing_title(client):
     data = json.loads(response.data)
     assert 'error' in data
 
-def test_update_post_api(client, db_session):
+def test_update_post_api(client, test_app):
     """Test PUT /api/posts/<id> endpoint"""
-    # Create a post
-    post = Post(title='Old Title', content='Old content')
-    db_session.session.add(post)
-    db_session.session.commit()
+    with test_app.app_context():
+        # Create a post
+        post = Post(title='Old Title', content='Old content')
+        db.session.add(post)
+        db.session.commit()
+        post_id = post.id
     
     # Update data
     update_data = {
@@ -110,7 +116,7 @@ def test_update_post_api(client, db_session):
     
     # Make PUT request
     response = client.put(
-        f'/api/posts/{post.id}',
+        f'/api/posts/{post_id}',
         data=json.dumps(update_data),
         content_type='application/json'
     )
@@ -122,16 +128,18 @@ def test_update_post_api(client, db_session):
     assert data['content'] == 'New content'
     
     # Check database was updated
-    updated_post = Post.query.get(post.id)
-    assert updated_post.title == 'New Title'
+    with test_app.app_context():
+        updated_post = Post.query.get(post_id)
+        assert updated_post.title == 'New Title'
 
-def test_delete_post_api(client, db_session):
+def test_delete_post_api(client, test_app):
     """Test DELETE /api/posts/<id> endpoint"""
-    # Create a post
-    post = Post(title='To Delete', content='Will be deleted')
-    db_session.session.add(post)
-    db_session.session.commit()
-    post_id = post.id
+    with test_app.app_context():
+        # Create a post
+        post = Post(title='To Delete', content='Will be deleted')
+        db.session.add(post)
+        db.session.commit()
+        post_id = post.id
     
     # Make DELETE request
     response = client.delete(f'/api/posts/{post_id}')
@@ -142,8 +150,9 @@ def test_delete_post_api(client, db_session):
     assert 'message' in data
     
     # Check post was deleted from database
-    deleted_post = Post.query.get(post_id)
-    assert deleted_post is None
+    with test_app.app_context():
+        deleted_post = Post.query.get(post_id)
+        assert deleted_post is None
 
 def test_get_nonexistent_post(client):
     """Test GET /api/posts/<id> with non-existent ID"""
