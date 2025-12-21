@@ -2,8 +2,7 @@
 # Test utility functions
 
 import pytest
-from app import db, add_post
-from app.models import Post
+from app import db, add_post, Post
 
 def test_add_post_helper(test_app):
     """Test the add_post helper function"""

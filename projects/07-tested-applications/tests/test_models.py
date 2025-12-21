@@ -2,8 +2,7 @@
 # Test if models work correctly
 
 import pytest
-from app import db
-from app.models import Post
+from app import db, Post
 from datetime import datetime
 
 def test_create_post(test_app):

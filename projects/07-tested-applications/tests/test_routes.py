@@ -3,8 +3,7 @@
 
 import pytest
 import json
-from app import db
-from app.models import Post
+from app import db, Post
 
 def test_index_route(client):
     """Test home page route"""
