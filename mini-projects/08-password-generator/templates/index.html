@@ -1,34 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
     <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
     <title>Password Generator</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
 </head>
 <body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
     <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
         <h1>🔐 Password Generator</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
         
         <!-- Password Display -->
+        <!-- What is this? Container for displaying generated password -->
         {% if password %}
+        <!-- What is this? Jinja2 conditional -->
+        <!-- {% if password %} = If password variable exists -->
+        <!-- Only show password display if password was generated -->
+        
             <div class="password-display">
+                <!-- What is this? Container for password display -->
+                <!-- div = Box for password -->
+                <!-- class="password-display" = CSS class for styling -->
+                
                 <h2>Generated Password:</h2>
+                <!-- What is this? Heading for password -->
+                <!-- h2 = Second level heading -->
+                
                 <div class="password-box">
+                    <!-- What is this? Container for password input and copy button -->
+                    <!-- div = Box for password and button -->
+                    <!-- class="password-box" = CSS class for styling -->
+                    
                     <input type="text" 
                            id="generated-password" 
                            value="{{ password }}" 
                            readonly
                            class="password-input">
+                    <!-- What is this? Input field to display password -->
+                    <!-- type="text" = Text input -->
+                    <!-- id="generated-password" = Unique identifier (used by JavaScript) -->
+                    <!-- value="{{ password }}" = Displays the generated password -->
+                    <!-- {{ password }} = Jinja2 syntax to display password variable -->
+                    <!-- readonly = User can't edit (just view and copy) -->
+                    <!-- class="password-input" = CSS class for styling -->
+                    
                     <button onclick="copyPassword()" class="btn btn-copy">📋 Copy</button>
+                    <!-- What is this? Copy button -->
+                    <!-- button = Button element -->
+                    <!-- onclick = JavaScript function to run when clicked -->
+                    <!-- copyPassword() = JavaScript function (defined below) -->
+                    <!-- class="btn btn-copy" = CSS classes for styling -->
+                    <!-- When clicked, copies password to clipboard -->
+                    
                 </div>
+                <!-- What is this? Closes the password-box div -->
+                
             </div>
+            <!-- What is this? Closes the password-display div -->
+            
         {% endif %}
+        <!-- What is this? Closes the if statement -->
+        <!-- {% endif %} = End of if block -->
         
         <!-- Password Generator Form -->
+        <!-- What is this? Form to configure password options -->
         <form action="{{ url_for('generate') }}" method="POST" class="generator-form">
+            <!-- What is this? HTML form element -->
+            <!-- action = Where to send form data (the route) -->
+            <!-- url_for('generate') = Flask function to generate URL for 'generate' route -->
+            <!-- method="POST" = Send data securely (not in URL) -->
+            <!-- class="generator-form" = CSS class for styling -->
+            
+            <!-- Password Length Input -->
+            <!-- What is this? Input field for password length -->
             <div class="form-group">
+                <!-- What is this? Group for form elements -->
+                <!-- div = Container for label and input -->
+                <!-- class="form-group" = CSS class for styling -->
+                
                 <label for="length">Password Length:</label>
+                <!-- What is this? Label for the input field -->
+                <!-- for="length" = Connects to input with id="length" -->
+                <!-- This is what users see: "Password Length:" -->
+                
                 <input type="number" 
                        id="length" 
                        name="length" 
@@ -37,61 +110,215 @@
                        value="{{ length if length else 12 }}"
                        class="number-input"
                        required>
+                <!-- What is this? Number input field for password length -->
+                <!-- type="number" = Number input (not text) -->
+                <!-- id="length" = Unique identifier -->
+                <!-- name="length" = Name of the data when form is submitted -->
+                <!-- This is what we'll get in Python: request.form.get('length') -->
+                <!-- min="4" = Minimum value (4 characters) -->
+                <!-- max="100" = Maximum value (100 characters) -->
+                <!-- value="{{ length if length else 12 }}" = Default value -->
+                <!-- {{ length if length else 12 }} = Jinja2: show length if exists, else 12 -->
+                <!-- Keeps the selected length after form submission -->
+                <!-- class="number-input" = CSS class for styling -->
+                <!-- required = User must fill this in before submitting -->
+                
             </div>
+            <!-- What is this? Closes the form-group div -->
             
+            <!-- Character Types Checkboxes -->
+            <!-- What is this? Checkboxes to select character types -->
             <div class="form-group">
+                <!-- What is this? Group for checkboxes -->
+                <!-- div = Container for label and checkboxes -->
+                
                 <label>Character Types:</label>
+                <!-- What is this? Label for checkbox group -->
+                <!-- label = Describes what the checkboxes are for -->
+                
                 <div class="checkbox-group">
+                    <!-- What is this? Container for all checkboxes -->
+                    <!-- div = Box to hold checkboxes -->
+                    <!-- class="checkbox-group" = CSS class for styling -->
+                    
+                    <!-- Uppercase Letters Checkbox -->
+                    <!-- What is this? Checkbox for uppercase letters -->
                     <label class="checkbox-label">
+                        <!-- What is this? Label for checkbox -->
+                        <!-- label = Makes entire area clickable -->
+                        <!-- class="checkbox-label" = CSS class for styling -->
+                        
                         <input type="checkbox" 
                                name="uppercase" 
                                {% if include_uppercase is not defined or include_uppercase %}checked{% endif %}>
+                        <!-- What is this? Checkbox input -->
+                        <!-- type="checkbox" = Checkbox input (can be checked/unchecked) -->
+                        <!-- name="uppercase" = Name of the data when form is submitted -->
+                        <!-- In Python: 'uppercase' in request.form (True if checked) -->
+                        <!-- {% if include_uppercase is not defined or include_uppercase %}checked{% endif %} = Conditional -->
+                        <!-- If include_uppercase is not defined (first visit) OR is True, checkbox is checked -->
+                        <!-- checked = Makes checkbox checked by default -->
+                        <!-- This keeps the checkbox state after form submission -->
+                        
                         Uppercase Letters (A-Z)
+                        <!-- What is this? Checkbox label text -->
+                        <!-- Users see this text next to checkbox -->
+                        
                     </label>
+                    <!-- What is this? Closes the checkbox label -->
+                    
+                    <!-- Lowercase Letters Checkbox -->
+                    <!-- What is this? Checkbox for lowercase letters -->
                     <label class="checkbox-label">
+                        <!-- What is this? Label for checkbox -->
+                        
                         <input type="checkbox" 
                                name="lowercase" 
                                {% if include_lowercase is not defined or include_lowercase %}checked{% endif %}>
+                        <!-- What is this? Checkbox input -->
+                        <!-- Same structure as uppercase checkbox -->
+                        <!-- name="lowercase" = Name for lowercase option -->
+                        
                         Lowercase Letters (a-z)
+                        <!-- What is this? Checkbox label text -->
+                        
                     </label>
+                    <!-- What is this? Closes the checkbox label -->
+                    
+                    <!-- Digits Checkbox -->
+                    <!-- What is this? Checkbox for digits -->
                     <label class="checkbox-label">
+                        <!-- What is this? Label for checkbox -->
+                        
                         <input type="checkbox" 
                                name="digits" 
                                {% if include_digits is not defined or include_digits %}checked{% endif %}>
+                        <!-- What is this? Checkbox input -->
+                        <!-- name="digits" = Name for digits option -->
+                        
                         Digits (0-9)
+                        <!-- What is this? Checkbox label text -->
+                        
                     </label>
+                    <!-- What is this? Closes the checkbox label -->
+                    
+                    <!-- Special Characters Checkbox -->
+                    <!-- What is this? Checkbox for special characters -->
                     <label class="checkbox-label">
+                        <!-- What is this? Label for checkbox -->
+                        
                         <input type="checkbox" 
                                name="special" 
                                {% if include_special is defined and include_special %}checked{% endif %}>
+                        <!-- What is this? Checkbox input -->
+                        <!-- name="special" = Name for special characters option -->
+                        <!-- {% if include_special is defined and include_special %}checked{% endif %} = Conditional -->
+                        <!-- Only checked if include_special is defined AND is True -->
+                        <!-- Special characters are optional (not checked by default) -->
+                        
                         Special Characters (!@#$%^&*)
+                        <!-- What is this? Checkbox label text -->
+                        
                     </label>
+                    <!-- What is this? Closes the checkbox label -->
+                    
                 </div>
+                <!-- What is this? Closes the checkbox-group div -->
+                
             </div>
+            <!-- What is this? Closes the form-group div -->
             
+            <!-- Submit Button -->
+            <!-- What is this? Button to generate password -->
             <button type="submit" class="btn btn-generate">Generate Password</button>
+            <!-- What is this? Submit button -->
+            <!-- type="submit" = Button that submits the form -->
+            <!-- class="btn btn-generate" = CSS classes for styling -->
+            <!-- When clicked, form is submitted to /generate route -->
+            
         </form>
+        <!-- What is this? Closes the form element -->
         
         <!-- Instructions -->
+        <!-- What is this? Section with password tips -->
         <div class="instructions">
+            <!-- What is this? Container for instructions -->
+            <!-- div = Box for instructions -->
+            <!-- class="instructions" = CSS class for styling -->
+            
             <h3>Tips for Strong Passwords:</h3>
+            <!-- What is this? Instructions heading -->
+            <!-- h3 = Third level heading -->
+            
             <ul>
+                <!-- What is this? Unordered list (bullet points) -->
+                <!-- ul = Unordered list -->
+                
                 <li>Use at least 12 characters</li>
+                <!-- What is this? First tip -->
+                <!-- li = List item -->
+                
                 <li>Include a mix of character types</li>
+                <!-- What is this? Second tip -->
+                
                 <li>Don't use dictionary words</li>
+                <!-- What is this? Third tip -->
+                
                 <li>Use unique passwords for each account</li>
+                <!-- What is this? Fourth tip -->
+                
             </ul>
+            <!-- What is this? Closes the unordered list -->
+            
         </div>
+        <!-- What is this? Closes the instructions div -->
+        
     </div>
+    <!-- What is this? Closes the container div -->
     
+    <!-- JavaScript for Copy Functionality -->
+    <!-- What is this? JavaScript code for copying password to clipboard -->
     <script>
+        // What is this? JavaScript function to copy password to clipboard
+        // JavaScript = Programming language that runs in the browser
+        // This makes the copy button work!
+        
         function copyPassword() {
+            // Explanation:
+            // - function = Defines a function
+            // - copyPassword = Function name
+            // - This function copies password to clipboard
+            
             const passwordInput = document.getElementById('generated-password');
+            // Explanation:
+            // - const = Constant variable (can't be changed)
+            // - document.getElementById() = Gets element by ID
+            // - 'generated-password' = ID of the password input field
+            // - passwordInput = Reference to the input element
+            // - This finds the password input field
+            
             passwordInput.select();
+            // Explanation:
+            // - .select() = Selects all text in the input
+            // - This highlights the password text
+            // - Makes it ready to copy
+            
             document.execCommand('copy');
+            // Explanation:
+            // - document.execCommand() = Executes command
+            // - 'copy' = Copy command
+            // - This copies selected text to clipboard
+            // - Note: This is older method, but works in most browsers
+            
             alert('Password copied to clipboard!');
+            // Explanation:
+            // - alert() = Shows popup message
+            // - 'Password copied to clipboard!' = Message to show
+            // - User sees confirmation that copy worked
         }
+        // Explanation:
+        // - Closes the copyPassword function
     </script>
+    <!-- What is this? Closes the script tag -->
 </body>
 </html>
-

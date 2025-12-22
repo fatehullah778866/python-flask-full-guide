@@ -2,93 +2,338 @@
 <html lang="en">
 <head>
     <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
     <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
     <title>URL Shortener</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
 </head>
 <body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
     <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
         <h1>🔗 URL Shortener</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
         
         <!-- Flash Messages -->
+        <!-- What is this? Container for flash messages (errors, success) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- What is this? Jinja2 syntax to get flash messages -->
+        <!-- get_flashed_messages() = Gets all flash messages -->
+        <!-- with_categories=true = Also gets message categories (error, success, etc.) -->
+        <!-- messages = Variable containing all flash messages -->
+        
             {% if messages %}
+            <!-- What is this? Conditional - only show if messages exist -->
+            <!-- {% if messages %} = If there are any messages -->
+            
                 {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
+                <!-- What is this? Loop through each message -->
+                <!-- {% for category, message in messages %} = Loop through messages -->
+                <!-- category = Message category (error, success, etc.) -->
+                <!-- message = The actual message text -->
+                
+                    <div class="flash-message {{ category }}">
+                        <!-- What is this? Container for each message -->
+                        <!-- div = Box for message -->
+                        <!-- class="flash-message {{ category }}" = CSS classes -->
+                        <!-- {{ category }} = Adds category as class (for styling) -->
+                        <!-- Example: class="flash-message error" -->
+                        
+                        {{ message }}
+                        <!-- What is this? Displays the message text -->
+                        <!-- {{ message }} = Jinja2 syntax to display message -->
+                        <!-- Flask replaces this with actual message -->
+                        
+                    </div>
+                    <!-- What is this? Closes the message div -->
+                    
                 {% endfor %}
+                <!-- What is this? Closes the for loop -->
+                <!-- {% endfor %} = End of for loop block -->
+                
             {% endif %}
+            <!-- What is this? Closes the if statement -->
+            <!-- {% endif %} = End of if block -->
+            
         {% endwith %}
+        <!-- What is this? Closes the with statement -->
+        <!-- {% endwith %} = End of with block -->
         
         <!-- URL Shortening Form -->
+        <!-- What is this? Form to enter long URL -->
         <form action="{{ url_for('shorten_url') }}" method="POST" class="url-form">
+            <!-- What is this? HTML form element -->
+            <!-- action = Where to send form data (the route) -->
+            <!-- url_for('shorten_url') = Flask function to generate URL for 'shorten_url' route -->
+            <!-- method="POST" = Send data securely (not in URL) -->
+            <!-- class="url-form" = CSS class for styling -->
+            
             <div class="input-group">
+                <!-- What is this? Group for input and button -->
+                <!-- div = Container for form elements -->
+                <!-- class="input-group" = CSS class for styling -->
+                
                 <input type="url" 
                        name="url" 
                        placeholder="Enter a long URL (e.g., https://www.example.com/very/long/url)" 
                        class="url-input"
                        required>
+                <!-- What is this? URL input field -->
+                <!-- type="url" = URL input (browser validates URL format) -->
+                <!-- name="url" = Name of the data when form is submitted -->
+                <!-- This is what we'll get in Python: request.form.get('url') -->
+                <!-- placeholder="..." = Hint text inside the input -->
+                <!-- class="url-input" = CSS class for styling -->
+                <!-- required = User must fill this in before submitting -->
+                
                 <button type="submit" class="btn btn-shorten">Shorten URL</button>
+                <!-- What is this? Submit button -->
+                <!-- type="submit" = Button that submits the form -->
+                <!-- class="btn btn-shorten" = CSS classes for styling -->
+                <!-- When clicked, form is submitted to /shorten route -->
+                
             </div>
+            <!-- What is this? Closes the input-group div -->
+            
         </form>
+        <!-- What is this? Closes the form element -->
         
         <!-- Shortened URLs List -->
+        <!-- What is this? Container for displaying shortened URLs -->
         {% if urls %}
+        <!-- What is this? Jinja2 conditional -->
+        <!-- {% if urls %} = If urls dictionary exists and is not empty -->
+        <!-- Only show table if there are shortened URLs -->
+        
             <div class="urls-list">
+                <!-- What is this? Container for URLs table -->
+                <!-- div = Box for URLs list -->
+                <!-- class="urls-list" = CSS class for styling -->
+                
                 <h2>Your Shortened URLs</h2>
+                <!-- What is this? Heading for URLs list -->
+                <!-- h2 = Second level heading -->
+                
                 <table class="urls-table">
+                    <!-- What is this? HTML table element -->
+                    <!-- table = Creates a table -->
+                    <!-- class="urls-table" = CSS class for styling -->
+                    
                     <thead>
+                        <!-- What is this? Table header section -->
+                        <!-- thead = Table head (column headers) -->
+                        
                         <tr>
+                            <!-- What is this? Table row -->
+                            <!-- tr = Table row element -->
+                            
                             <th>Short URL</th>
+                            <!-- What is this? Table header cell -->
+                            <!-- th = Table header (bold, centered) -->
+                            <!-- "Short URL" = Column header text -->
+                            
                             <th>Original URL</th>
+                            <!-- What is this? Table header cell -->
+                            <!-- "Original URL" = Column header text -->
+                            
                             <th>Actions</th>
+                            <!-- What is this? Table header cell -->
+                            <!-- "Actions" = Column header text -->
+                            
                         </tr>
+                        <!-- What is this? Closes the table row -->
+                        
                     </thead>
+                    <!-- What is this? Closes the table head -->
+                    
                     <tbody>
+                        <!-- What is this? Table body section -->
+                        <!-- tbody = Table body (data rows) -->
+                        
                         {% for short_code, long_url in urls.items() %}
+                        <!-- What is this? Jinja2 loop through dictionary -->
+                        <!-- {% for short_code, long_url in urls.items() %} = Loop through URLs dictionary -->
+                        <!-- urls.items() = Gets key-value pairs from dictionary -->
+                        <!-- short_code = Key (the short code) -->
+                        <!-- long_url = Value (the original URL) -->
+                        <!-- This will repeat for each URL in the dictionary -->
+                        
                             <tr>
+                                <!-- What is this? Table row for each URL -->
+                                <!-- tr = Table row element -->
+                                
                                 <td>
+                                    <!-- What is this? Table data cell for short URL -->
+                                    <!-- td = Table data cell -->
+                                    
                                     <a href="{{ url_for('redirect_to_url', short_code=short_code) }}" 
                                        target="_blank"
                                        class="short-link">
+                                        <!-- What is this? Link to short URL -->
+                                        <!-- a = Anchor tag (creates a link) -->
+                                        <!-- href = Where the link goes -->
+                                        <!-- url_for('redirect_to_url', short_code=short_code) = Generates URL with short code -->
+                                        <!-- Example: /abc123 -->
+                                        <!-- target="_blank" = Opens link in new tab -->
+                                        <!-- class="short-link" = CSS class for styling -->
+                                        
                                         {{ request.host_url }}{{ short_code }}
+                                        <!-- What is this? Displays the full short URL -->
+                                        <!-- request.host_url = Current host URL (e.g., http://127.0.0.1:5000/) -->
+                                        <!-- {{ short_code }} = The short code -->
+                                        <!-- Example: "http://127.0.0.1:5000/abc123" -->
+                                        
                                     </a>
+                                    <!-- What is this? Closes the anchor tag -->
+                                    
                                 </td>
+                                <!-- What is this? Closes the table data cell -->
+                                
                                 <td class="long-url">{{ long_url }}</td>
+                                <!-- What is this? Table data cell for original URL -->
+                                <!-- td = Table data cell -->
+                                <!-- class="long-url" = CSS class for styling -->
+                                <!-- {{ long_url }} = Displays the original long URL -->
+                                
                                 <td>
+                                    <!-- What is this? Table data cell for actions -->
+                                    <!-- td = Table data cell -->
+                                    
                                     <button onclick="copyToClipboard('{{ request.host_url }}{{ short_code }}')" 
                                             class="btn btn-copy">Copy</button>
+                                    <!-- What is this? Copy button -->
+                                    <!-- button = Button element -->
+                                    <!-- onclick = JavaScript function to run when clicked -->
+                                    <!-- copyToClipboard() = JavaScript function (defined below) -->
+                                    <!-- '{{ request.host_url }}{{ short_code }}' = Short URL to copy -->
+                                    <!-- class="btn btn-copy" = CSS classes for styling -->
+                                    <!-- When clicked, copies short URL to clipboard -->
+                                    
                                 </td>
+                                <!-- What is this? Closes the table data cell -->
+                                
                             </tr>
+                            <!-- What is this? Closes the table row -->
+                            
                         {% endfor %}
+                        <!-- What is this? Closes the for loop -->
+                        <!-- {% endfor %} = End of for loop block -->
+                        
                     </tbody>
+                    <!-- What is this? Closes the table body -->
+                    
                 </table>
+                <!-- What is this? Closes the table element -->
+                
             </div>
+            <!-- What is this? Closes the urls-list div -->
+            
         {% else %}
+        <!-- What is this? Else condition -->
+        <!-- {% else %} = If urls dictionary is empty -->
+        
             <div class="empty-state">
+                <!-- What is this? Container for empty state message -->
+                <!-- div = Box for empty message -->
+                <!-- class="empty-state" = CSS class for styling -->
+                
                 <p>No shortened URLs yet. Enter a URL above to get started!</p>
+                <!-- What is this? Message when no URLs -->
+                <!-- p = Paragraph tag -->
+                <!-- Shows when URLs dictionary is empty -->
+                
             </div>
+            <!-- What is this? Closes the empty-state div -->
+            
         {% endif %}
+        <!-- What is this? Closes the if statement -->
+        <!-- {% endif %} = End of if block -->
         
         <!-- Instructions -->
+        <!-- What is this? Section with instructions -->
         <div class="instructions">
+            <!-- What is this? Container for instructions -->
+            <!-- div = Box for instructions -->
+            <!-- class="instructions" = CSS class for styling -->
+            
             <h3>How to Use:</h3>
+            <!-- What is this? Instructions heading -->
+            <!-- h3 = Third level heading -->
+            
             <ol>
+                <!-- What is this? Ordered list (numbered) -->
+                <!-- ol = Ordered list -->
+                
                 <li>Enter a long URL in the input field above</li>
+                <!-- What is this? First instruction -->
+                <!-- li = List item -->
+                
                 <li>Click "Shorten URL" button</li>
+                <!-- What is this? Second instruction -->
+                
                 <li>Copy the short URL and share it!</li>
+                <!-- What is this? Third instruction -->
+                
                 <li>Click the short URL to visit the original URL</li>
+                <!-- What is this? Fourth instruction -->
+                
             </ol>
+            <!-- What is this? Closes the ordered list -->
+            
         </div>
+        <!-- What is this? Closes the instructions div -->
+        
     </div>
+    <!-- What is this? Closes the container div -->
     
+    <!-- JavaScript for Copy Functionality -->
+    <!-- What is this? JavaScript code for copying to clipboard -->
     <script>
+        // What is this? JavaScript function to copy text to clipboard
+        // JavaScript = Programming language that runs in the browser
+        // This makes the copy button work!
+        
         function copyToClipboard(text) {
+            // Explanation:
+            // - function = Defines a function
+            // - copyToClipboard = Function name
+            // - text = Parameter (the text to copy)
+            // - This function copies text to clipboard
+            
             navigator.clipboard.writeText(text).then(function() {
+                // Explanation:
+                // - navigator.clipboard = Browser API for clipboard operations
+                // - writeText(text) = Writes text to clipboard
+                // - .then() = Runs after copy succeeds
+                // - This is modern way to copy to clipboard
+                
                 alert('Copied to clipboard!');
+                // Explanation:
+                // - alert() = Shows popup message
+                // - 'Copied to clipboard!' = Message to show
+                // - User sees confirmation that copy worked
             });
+            // Explanation:
+            // - Closes the .then() function
         }
+        // Explanation:
+        // - Closes the copyToClipboard function
     </script>
+    <!-- What is this? Closes the script tag -->
 </body>
 </html>
-
