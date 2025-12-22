@@ -1,0 +1,55 @@
+# German translations
+msgid ""
+msgstr ""
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Multi-language Support"
+msgstr "Mehrsprachige Unterstützung"
+
+msgid "Welcome"
+msgstr "Willkommen"
+
+msgid "This is a multi-language application. You can switch between different languages using the selector above."
+msgstr "Dies ist eine mehrsprachige Anwendung. Sie können zwischen verschiedenen Sprachen mit dem obigen Auswahlfeld wechseln."
+
+msgid "Features"
+msgstr "Funktionen"
+
+msgid "Support for multiple languages"
+msgstr "Unterstützung für mehrere Sprachen"
+
+msgid "Easy language switching"
+msgstr "Einfacher Sprachwechsel"
+
+msgid "Automatic date/time formatting"
+msgstr "Automatische Datums-/Zeitformatierung"
+
+msgid "Browser language detection"
+msgstr "Browser-Spracherkennung"
+
+msgid "Current Date and Time"
+msgstr "Aktuelles Datum und Uhrzeit"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "Time:"
+msgstr "Zeit:"
+
+msgid "How to Use"
+msgstr "So verwenden Sie"
+
+msgid "Select a language from the dropdown menu above"
+msgstr "Wählen Sie eine Sprache aus dem Dropdown-Menü oben aus"
+
+msgid "The page content will update automatically"
+msgstr "Der Seiteninhalt wird automatisch aktualisiert"
+
+msgid "Date and time will be formatted according to the selected language"
+msgstr "Datum und Uhrzeit werden entsprechend der ausgewählten Sprache formatiert"
+
+msgid "Your language preference will be saved in the session"
+msgstr "Ihre Sprachpräferenz wird in der Sitzung gespeichert"
+

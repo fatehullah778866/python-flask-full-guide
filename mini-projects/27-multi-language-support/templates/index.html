@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('language', 'en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Multi-language Support') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 {{ _('Multi-language Support') }}</h1>
+            <div class="language-selector">
+                <form action="{{ url_for('set_language') }}" method="POST" class="language-form">
+                    <select name="language" onchange="this.form.submit()" class="language-select">
+                        <option value="en" {% if session.get('language', 'en') == 'en' %}selected{% endif %}>English</option>
+                        <option value="es" {% if session.get('language', 'en') == 'es' %}selected{% endif %}>Español</option>
+                        <option value="fr" {% if session.get('language', 'en') == 'fr' %}selected{% endif %}>Français</option>
+                        <option value="de" {% if session.get('language', 'en') == 'de' %}selected{% endif %}>Deutsch</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Welcome Section -->
+        <div class="section">
+            <h2>{{ _('Welcome') }}</h2>
+            <p>{{ _('This is a multi-language application. You can switch between different languages using the selector above.') }}</p>
+        </div>
+        
+        <!-- Features Section -->
+        <div class="section">
+            <h2>{{ _('Features') }}</h2>
+            <ul class="features-list">
+                <li>{{ _('Support for multiple languages') }}</li>
+                <li>{{ _('Easy language switching') }}</li>
+                <li>{{ _('Automatic date/time formatting') }}</li>
+                <li>{{ _('Browser language detection') }}</li>
+            </ul>
+        </div>
+        
+        <!-- Date/Time Section -->
+        <div class="section">
+            <h2>{{ _('Current Date and Time') }}</h2>
+            <p class="datetime-display">
+                {{ _('Date:') }} {{ format_date(current_datetime) }}<br>
+                {{ _('Time:') }} {{ format_datetime(current_datetime, format='short') }}
+            </p>
+        </div>
+        
+        <!-- Instructions Section -->
+        <div class="section">
+            <h2>{{ _('How to Use') }}</h2>
+            <ol class="instructions-list">
+                <li>{{ _('Select a language from the dropdown menu above') }}</li>
+                <li>{{ _('The page content will update automatically') }}</li>
+                <li>{{ _('Date and time will be formatted according to the selected language') }}</li>
+                <li>{{ _('Your language preference will be saved in the session') }}</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+

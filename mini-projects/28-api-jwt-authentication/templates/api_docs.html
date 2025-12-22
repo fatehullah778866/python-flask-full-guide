@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT API Documentation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 JWT API Documentation</h1>
+        
+        <!-- Overview -->
+        <div class="section">
+            <h2>Overview</h2>
+            <p>This API uses JWT (JSON Web Token) authentication. You need to login to get tokens, then use the access token to access protected endpoints.</p>
+        </div>
+        
+        <!-- Endpoints -->
+        <div class="section">
+            <h2>API Endpoints</h2>
+            
+            <!-- Register -->
+            <div class="endpoint">
+                <h3>POST /api/register</h3>
+                <p><strong>Description:</strong> Register a new user</p>
+                <p><strong>Authentication:</strong> Not required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "username": "john",
+  "email": "john@example.com",
+  "password": "secret123"
+}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "message": "User registered successfully",
+  "user": {
+    "id": 1,
+    "username": "john",
+    "email": "john@example.com"
+  }
+}</pre>
+            </div>
+            
+            <!-- Login -->
+            <div class="endpoint">
+                <h3>POST /api/login</h3>
+                <p><strong>Description:</strong> Login and get JWT tokens</p>
+                <p><strong>Authentication:</strong> Not required</p>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "username": "john",
+  "password": "secret123"
+}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "message": "Login successful",
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+  "user": {
+    "id": 1,
+    "username": "john",
+    "email": "john@example.com"
+  }
+}</pre>
+            </div>
+            
+            <!-- Refresh -->
+            <div class="endpoint">
+                <h3>POST /api/refresh</h3>
+                <p><strong>Description:</strong> Get new access token using refresh token</p>
+                <p><strong>Authentication:</strong> Refresh token required</p>
+                <p><strong>Headers:</strong></p>
+                <pre>Authorization: Bearer &lt;refresh_token&gt;</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGc..."
+}</pre>
+            </div>
+            
+            <!-- Get Resources -->
+            <div class="endpoint">
+                <h3>GET /api/resources</h3>
+                <p><strong>Description:</strong> Get all resources for current user</p>
+                <p><strong>Authentication:</strong> Access token required</p>
+                <p><strong>Headers:</strong></p>
+                <pre>Authorization: Bearer &lt;access_token&gt;</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "resources": [
+    {
+      "id": 1,
+      "name": "Resource 1",
+      "description": "Description",
+      "owner_id": 1,
+      "date_created": "2024-01-01T12:00:00"
+    }
+  ],
+  "count": 1
+}</pre>
+            </div>
+            
+            <!-- Create Resource -->
+            <div class="endpoint">
+                <h3>POST /api/resources</h3>
+                <p><strong>Description:</strong> Create a new resource</p>
+                <p><strong>Authentication:</strong> Access token required</p>
+                <p><strong>Headers:</strong></p>
+                <pre>Authorization: Bearer &lt;access_token&gt;</pre>
+                <p><strong>Request Body:</strong></p>
+                <pre>{
+  "name": "My Resource",
+  "description": "Resource description"
+}</pre>
+                <p><strong>Response:</strong></p>
+                <pre>{
+  "message": "Resource created successfully",
+  "resource": {
+    "id": 1,
+    "name": "My Resource",
+    "description": "Resource description",
+    "owner_id": 1,
+    "date_created": "2024-01-01T12:00:00"
+  }
+}</pre>
+            </div>
+        </div>
+        
+        <!-- Authentication -->
+        <div class="section">
+            <h2>Authentication</h2>
+            <p>To access protected endpoints, include the JWT token in the Authorization header:</p>
+            <pre>Authorization: Bearer &lt;access_token&gt;</pre>
+            <p><strong>Token Expiration:</strong></p>
+            <ul>
+                <li>Access Token: 1 hour</li>
+                <li>Refresh Token: 30 days</li>
+            </ul>
+        </div>
+        
+        <!-- Testing -->
+        <div class="section">
+            <h2>Testing the API</h2>
+            <p>You can test the API using:</p>
+            <ul>
+                <li>curl command</li>
+                <li>Postman</li>
+                <li>Python requests library</li>
+                <li>JavaScript fetch API</li>
+            </ul>
+            <p>See <code>test_api.py</code> for example code!</p>
+        </div>
+    </div>
+</body>
+</html>
+

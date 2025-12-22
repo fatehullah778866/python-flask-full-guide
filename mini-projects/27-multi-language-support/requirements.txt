@@ -1,0 +1,4 @@
+Flask==3.0.0
+Flask-Babel==3.1.0
+Babel==2.14.0
+

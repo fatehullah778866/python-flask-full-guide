@@ -1,0 +1,55 @@
+# French translations
+msgid ""
+msgstr ""
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "Multi-language Support"
+msgstr "Support Multi-langues"
+
+msgid "Welcome"
+msgstr "Bienvenue"
+
+msgid "This is a multi-language application. You can switch between different languages using the selector above."
+msgstr "Ceci est une application multi-langues. Vous pouvez basculer entre différentes langues en utilisant le sélecteur ci-dessus."
+
+msgid "Features"
+msgstr "Fonctionnalités"
+
+msgid "Support for multiple languages"
+msgstr "Support pour plusieurs langues"
+
+msgid "Easy language switching"
+msgstr "Changement de langue facile"
+
+msgid "Automatic date/time formatting"
+msgstr "Formatage automatique de la date/heure"
+
+msgid "Browser language detection"
+msgstr "Détection de la langue du navigateur"
+
+msgid "Current Date and Time"
+msgstr "Date et Heure Actuelles"
+
+msgid "Date:"
+msgstr "Date:"
+
+msgid "Time:"
+msgstr "Heure:"
+
+msgid "How to Use"
+msgstr "Comment Utiliser"
+
+msgid "Select a language from the dropdown menu above"
+msgstr "Sélectionnez une langue dans le menu déroulant ci-dessus"
+
+msgid "The page content will update automatically"
+msgstr "Le contenu de la page sera mis à jour automatiquement"
+
+msgid "Date and time will be formatted according to the selected language"
+msgstr "La date et l'heure seront formatées selon la langue sélectionnée"
+
+msgid "Your language preference will be saved in the session"
+msgstr "Votre préférence de langue sera enregistrée dans la session"
+
