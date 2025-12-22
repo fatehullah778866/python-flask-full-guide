@@ -4,7 +4,7 @@
 # Step 1: Import Flask and SocketIO Tools
 # What is this? We're importing Flask and WebSocket tools
 # Think of it like: "Get Flask tools and real-time communication tools"
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from datetime import datetime
 # Explanation:
