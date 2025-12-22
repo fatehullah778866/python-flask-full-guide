@@ -77,14 +77,14 @@
             
             {% if tasks %}
             <!-- What is this? Jinja2 conditional -->
-            <!-- {% if tasks %} = If tasks list exists and is not empty -->
+            <!-- Only render this section when the tasks list is not empty -->
             <!-- Jinja2 = Template engine Flask uses -->
             <!-- Only show tasks if there are any -->
             
                 <h2>Your Tasks ({{ tasks|length }})</h2>
                 <!-- What is this? Heading showing number of tasks -->
                 <!-- h2 = Second level heading -->
-                <!-- {{ tasks|length }} = Jinja2 filter to get list length -->
+                <!-- Show how many tasks are currently saved -->
                 <!-- |length = Filter that returns number of items -->
                 <!-- Shows: "Your Tasks (3)" if there are 3 tasks -->
                 
@@ -95,7 +95,7 @@
                     
                     {% for task in tasks %}
                     <!-- What is this? Jinja2 loop -->
-                    <!-- {% for task in tasks %} = Loop through each task -->
+                <!-- Repeat this block for every task in the list -->
                     <!-- task = Current task in the loop -->
                     <!-- tasks = List of tasks from Python -->
                     <!-- This will repeat for each task in the list -->
@@ -104,7 +104,7 @@
                             <!-- What is this? List item for each task -->
                             <!-- li = List item -->
                             <!-- class="task-item" = CSS class for task styling -->
-                            <!-- {% if task.completed %}completed{% endif %} = Conditional class -->
+                            <!-- Add the 'completed' class when the task is done -->
                             <!-- If task is completed, adds 'completed' class -->
                             <!-- This allows CSS to style completed tasks differently -->
                             
@@ -113,7 +113,7 @@
                             <!-- What is this? Displays the task text -->
                             <!-- span = Inline container -->
                             <!-- class="task-text" = CSS class for text styling -->
-                            <!-- {{ task.text }} = Jinja2 syntax to display task text -->
+                            <!-- Display each task's text -->
                             <!-- task.text = The 'text' field from the task dictionary -->
                             
                             <!-- Task Actions -->
@@ -138,7 +138,7 @@
                                         
                                         {% if task.completed %}
                                         <!-- What is this? Conditional display -->
-                                        <!-- {% if task.completed %} = If task is completed -->
+                                        <!-- Text displayed when a task is already complete -->
                                         
                                             ⏪ Mark Incomplete
                                             <!-- What is this? Button text if completed -->
@@ -146,7 +146,7 @@
                                             
                                         {% else %}
                                         <!-- What is this? Else condition -->
-                                        <!-- {% else %} = If task is not completed -->
+                                        <!-- Text shown when a task is still pending -->
                                         
                                             ✅ Mark Complete
                                             <!-- What is this? Button text if not completed -->
@@ -154,7 +154,7 @@
                                             
                                         {% endif %}
                                         <!-- What is this? Closes the if statement -->
-                                        <!-- {% endif %} = End of if block -->
+                                        <!-- End of the completion toggle text block -->
                                         
                                     </button>
                                     <!-- What is this? Closes the button element -->
@@ -197,14 +197,14 @@
                         
                     {% endfor %}
                     <!-- What is this? Closes the for loop -->
-                    <!-- {% endfor %} = End of for loop block -->
+                    <!-- End of the task loop -->
                     
                 </ul>
                 <!-- What is this? Closes the unordered list -->
                 
             {% else %}
             <!-- What is this? Else condition -->
-            <!-- {% else %} = If tasks list is empty -->
+            <!-- Show this fallback when no tasks exist -->
             
                 <div class="empty-state">
                     <!-- What is this? Container for empty state message -->
@@ -222,7 +222,7 @@
                 
             {% endif %}
             <!-- What is this? Closes the if statement -->
-            <!-- {% endif %} = End of if block -->
+            <!-- End of the main tasks conditional -->
             
         </div>
         <!-- What is this? Closes the tasks-container div -->
