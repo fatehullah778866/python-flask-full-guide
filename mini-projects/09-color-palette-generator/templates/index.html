@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Color Palette Generator</h1>
+        
+        <!-- Generate New Palette Button -->
+        <div class="button-container">
+            <a href="{{ url_for('new_palette') }}" class="btn">🎲 Generate New Palette</a>
+            <a href="{{ url_for('index') }}" class="btn secondary">🔄 Refresh</a>
+        </div>
+        
+        <!-- Color Palette Display -->
+        {% if palette %}
+            <div class="palette-container">
+                <h2>Your Color Palette</h2>
+                <div class="colors-grid">
+                    {% for color in palette %}
+                        <div class="color-card" style="background-color: {{ color }};">
+                            <div class="color-info">
+                                <span class="color-code">{{ color }}</span>
+                                <button onclick="copyColor('{{ color }}')" class="btn-copy-small">📋 Copy</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Click "Generate New Palette" to create a new random palette</li>
+                <li>Each palette contains 5 random colors</li>
+                <li>Click "📋 Copy" to copy a color's hex code</li>
+                <li>Use these colors in your designs!</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function copyColor(color) {
+            navigator.clipboard.writeText(color).then(function() {
+                alert('Color ' + color + ' copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
+

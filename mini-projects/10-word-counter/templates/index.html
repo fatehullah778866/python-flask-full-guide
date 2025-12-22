@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Word Counter</h1>
+        
+        <!-- Word Counter Form -->
+        <form action="{{ url_for('count') }}" method="POST" class="counter-form">
+            <div class="form-group">
+                <label for="text">Enter your text:</label>
+                <textarea id="text" 
+                          name="text" 
+                          rows="10" 
+                          class="text-input"
+                          placeholder="Paste or type your text here..."
+                          required>{{ stats.text if stats else '' }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-count">Count Words</button>
+        </form>
+        
+        <!-- Statistics Display -->
+        {% if stats %}
+            <div class="stats-container">
+                <h2>Text Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">{{ stats.words }}</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ stats.characters_with_spaces }}</div>
+                        <div class="stat-label">Characters (with spaces)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ stats.characters_without_spaces }}</div>
+                        <div class="stat-label">Characters (without spaces)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ stats.sentences }}</div>
+                        <div class="stat-label">Sentences</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">{{ stats.paragraphs }}</div>
+                        <div class="stat-label">Paragraphs</div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="instructions">
+                <h3>How to Use:</h3>
+                <ol>
+                    <li>Enter or paste your text in the textarea above</li>
+                    <li>Click "Count Words" button</li>
+                    <li>View detailed statistics about your text</li>
+                </ol>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
