@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Feed</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 Social Media Feed</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('users') }}" class="btn btn-nav">Users</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-nav">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Create Post Form -->
+        <div class="create-post-container">
+            <h2>Create Post</h2>
+            <form action="{{ url_for('create_post') }}" method="POST" class="post-form">
+                <textarea name="content" 
+                          rows="4" 
+                          class="post-input"
+                          placeholder="What's on your mind?"
+                          required></textarea>
+                <button type="submit" class="btn btn-post">Post</button>
+            </form>
+        </div>
+        
+        <!-- Feed -->
+        <div class="feed-container">
+            <h2>Your Feed</h2>
+            
+            {% if posts %}
+                {% for post in posts %}
+                    <div class="post-card">
+                        <div class="post-header">
+                            <h3 class="post-author">{{ post.author.username }}</h3>
+                            <span class="post-date">{{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                        </div>
+                        <p class="post-content">{{ post.content|replace('\n', '<br>')|safe }}</p>
+                        <div class="post-actions">
+                            <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST" class="like-form">
+                                <button type="submit" class="btn-like {% if post.id in user_likes %}liked{% endif %}">
+                                    ❤️ {{ post.likes|length }} likes
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-feed">
+                    <p>Your feed is empty. Follow some users to see their posts!</p>
+                    <a href="{{ url_for('users') }}" class="btn btn-follow">Find Users</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

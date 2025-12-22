@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Task Management</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('create_team') }}" class="btn btn-primary">Create Team</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Teams Section -->
+        <div class="section">
+            <h2>My Teams</h2>
+            {% if teams %}
+                <div class="teams-grid">
+                    {% for team in teams %}
+                        <div class="team-card">
+                            <h3>{{ team.name }}</h3>
+                            <p class="team-description">{{ team.description or 'No description' }}</p>
+                            <p class="team-members">Members: {{ team.members.count() }}</p>
+                            <a href="{{ url_for('team_detail', team_id=team.id) }}" class="btn btn-view">View Team</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You are not in any teams yet.</p>
+                    <a href="{{ url_for('create_team') }}" class="btn btn-primary">Create Your First Team</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Tasks Section -->
+        <div class="section">
+            <h2>My Assigned Tasks</h2>
+            {% if tasks %}
+                <div class="tasks-list">
+                    {% for task in tasks %}
+                        <div class="task-card">
+                            <h3>{{ task.title }}</h3>
+                            <p class="task-description">{{ task.description or 'No description' }}</p>
+                            <div class="task-meta">
+                                <span class="task-status status-{{ task.status }}">{{ task.status }}</span>
+                                <span class="task-priority priority-{{ task.priority }}">{{ task.priority }}</span>
+                                <span class="task-team">Team: {{ task.team.name }}</span>
+                            </div>
+                            <a href="{{ url_for('team_detail', team_id=task.team_id) }}" class="btn btn-view">View Task</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>You have no assigned tasks.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

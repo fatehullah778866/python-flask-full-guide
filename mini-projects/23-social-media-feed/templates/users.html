@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Social Media</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 Users</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-nav">Back to Feed</a>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Users List -->
+        <div class="users-container">
+            {% for user in users %}
+                {% if user.id != current_user.id %}
+                    <div class="user-card">
+                        <h3>{{ user.username }}</h3>
+                        <p class="user-email">{{ user.email }}</p>
+                        <form action="{{ url_for('follow_user', user_id=user.id) }}" method="POST" class="follow-form">
+                            {% if user.id in following_ids %}
+                                <button type="submit" class="btn btn-unfollow">Unfollow</button>
+                            {% else %}
+                                <button type="submit" class="btn btn-follow">Follow</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
+
