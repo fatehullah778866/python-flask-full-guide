@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔗 URL Shortener</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- URL Shortening Form -->
+        <form action="{{ url_for('shorten_url') }}" method="POST" class="url-form">
+            <div class="input-group">
+                <input type="url" 
+                       name="url" 
+                       placeholder="Enter a long URL (e.g., https://www.example.com/very/long/url)" 
+                       class="url-input"
+                       required>
+                <button type="submit" class="btn btn-shorten">Shorten URL</button>
+            </div>
+        </form>
+        
+        <!-- Shortened URLs List -->
+        {% if urls %}
+            <div class="urls-list">
+                <h2>Your Shortened URLs</h2>
+                <table class="urls-table">
+                    <thead>
+                        <tr>
+                            <th>Short URL</th>
+                            <th>Original URL</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for short_code, long_url in urls.items() %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('redirect_to_url', short_code=short_code) }}" 
+                                       target="_blank"
+                                       class="short-link">
+                                        {{ request.host_url }}{{ short_code }}
+                                    </a>
+                                </td>
+                                <td class="long-url">{{ long_url }}</td>
+                                <td>
+                                    <button onclick="copyToClipboard('{{ request.host_url }}{{ short_code }}')" 
+                                            class="btn btn-copy">Copy</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No shortened URLs yet. Enter a URL above to get started!</p>
+            </div>
+        {% endif %}
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Enter a long URL in the input field above</li>
+                <li>Click "Shorten URL" button</li>
+                <li>Copy the short URL and share it!</li>
+                <li>Click the short URL to visit the original URL</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
+
