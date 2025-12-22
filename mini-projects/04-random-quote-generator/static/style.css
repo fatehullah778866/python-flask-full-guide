@@ -1,0 +1,476 @@
+/* Random Quote Generator - Stylesheet */
+/* This file makes our quote generator look beautiful! */
+
+/* Reset and Base Styles */
+/* What is this? Removes default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Explanation:
+   - * = Selects all elements
+   - margin: 0 = No space outside elements
+   - padding: 0 = No space inside elements
+   - box-sizing: border-box = Includes padding/border in width/height
+*/
+
+/* Body Styles */
+/* What is this? Styles for the entire page */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    /* What is this? Font family (what text looks like) */
+    /* Georgia = Elegant serif font, good for quotes */
+    /* serif = Fonts with decorative strokes */
+    
+    line-height: 1.8;
+    /* What is this? Space between lines of text */
+    /* 1.8 = 1.8 times the font size (makes text easier to read) */
+    
+    color: #333;
+    /* What is this? Text color */
+    /* #333 = Dark gray (almost black) */
+    
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* What is this? Background gradient */
+    /* linear-gradient = Smooth color transition */
+    /* Creates a beautiful purple gradient background */
+    
+    min-height: 100vh;
+    /* What is this? Minimum height */
+    /* 100vh = 100% of viewport height (full screen) */
+    
+    padding: 2rem 0;
+    /* What is this? Space above and below body */
+}
+
+/* Container Styles */
+/* What is this? Styles for the main container */
+.container {
+    max-width: 800px;
+    /* What is this? Maximum width */
+    /* 800px = 800 pixels wide */
+    /* Prevents content from being too wide */
+    
+    margin: 0 auto;
+    /* What is this? Centers the container */
+    /* margin: 0 auto = No top/bottom margin, equal left/right (centers) */
+    
+    padding: 2rem;
+    /* What is this? Space inside container */
+    /* 2rem = 2 times root font size (about 32px) */
+}
+
+/* Heading Styles */
+/* What is this? Styles for headings */
+h1 {
+    color: white;
+    /* What is this? White text */
+    
+    text-align: center;
+    /* What is this? Text alignment */
+    /* center = Centers the text */
+    
+    margin-bottom: 3rem;
+    /* What is this? Space below heading */
+    
+    font-size: 3rem;
+    /* What is this? Font size */
+    /* 3rem = 3 times root font size (very large) */
+    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* What is this? Text shadow effect */
+    /* Creates depth, makes text stand out */
+    
+    font-weight: 300;
+    /* What is this? Font weight */
+    /* 300 = Lighter weight (not bold) */
+}
+
+h2 {
+    color: white;
+    /* What is this? White text */
+    
+    margin-top: 3rem;
+    /* What is this? Space above heading */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+    
+    font-size: 2rem;
+    /* What is this? Font size */
+}
+
+h3 {
+    color: white;
+    /* What is this? White text */
+    
+    margin-top: 1.5rem;
+    /* What is this? Space above heading */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+}
+
+/* Quote Card Styles */
+/* What is this? Styles for the quote display card */
+.quote-card {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 3rem;
+    /* What is this? Space inside card */
+    /* 3rem = Generous padding for elegant look */
+    
+    border-radius: 15px;
+    /* What is this? Rounded corners */
+    /* 15px = More rounded than usual */
+    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* What is this? Shadow effect */
+    /* Creates depth, makes card look elevated */
+    /* 0 10px 30px = Shadow offset and blur */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below card */
+    
+    text-align: center;
+    /* What is this? Centers content */
+    
+    position: relative;
+    /* What is this? Allows positioning of child elements */
+    /* relative = Element can have positioned children */
+    
+    transition: transform 0.3s ease;
+    /* What is this? Smooth animation */
+    /* transform = Can move/scale element */
+    /* 0.3s = Animation duration */
+    /* ease = Smooth animation curve */
+}
+
+.quote-card:hover {
+    transform: translateY(-5px);
+    /* What is this? Moves card up slightly on hover */
+    /* translateY(-5px) = Moves 5 pixels up */
+    /* :hover = When mouse is over element */
+    /* Creates interactive effect */
+}
+
+.quote-icon {
+    font-size: 4rem;
+    /* What is this? Very large icon size */
+    /* 4rem = 4 times root font size */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below icon */
+    
+    opacity: 0.3;
+    /* What is this? Makes icon semi-transparent */
+    /* 0.3 = 30% opacity (70% transparent) */
+    /* Creates subtle background effect */
+}
+
+/* Quote Text Styles */
+/* What is this? Styles for the quote text */
+blockquote {
+    margin: 0;
+    /* What is this? No margin */
+    
+    padding: 0;
+    /* What is this? No padding */
+    
+    border: none;
+    /* What is this? No border */
+    
+    font-style: italic;
+    /* What is this? Italic text */
+    /* italic = Slanted text, traditional for quotes */
+    
+    font-size: 1.5rem;
+    /* What is this? Large font size */
+    /* 1.5rem = 1.5 times root font size */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+    
+    line-height: 1.8;
+    /* What is this? Space between lines */
+    /* Makes text easier to read */
+    
+    quotes: '"' '"' "'" "'";
+    /* What is this? Quote marks for blockquote */
+    /* Defines quote character style */
+}
+
+.quote-text {
+    position: relative;
+    /* What is this? Allows positioning */
+    
+    padding: 1rem 0;
+    /* What is this? Space above and below */
+}
+
+.quote-text::before {
+    content: '"';
+    /* What is this? Opening quote mark */
+    /* ::before = Pseudo-element (adds content before) */
+    /* content = What to add */
+    
+    font-size: 4rem;
+    /* What is this? Very large quote mark */
+    
+    color: #667eea;
+    /* What is this? Purple color */
+    
+    position: absolute;
+    /* What is this? Positioned absolutely */
+    
+    left: -1rem;
+    /* What is this? Position from left */
+    
+    top: 0;
+    /* What is this? Position from top */
+    
+    opacity: 0.3;
+    /* What is this? Semi-transparent */
+}
+
+.quote-text::after {
+    content: '"';
+    /* What is this? Closing quote mark */
+    /* ::after = Pseudo-element (adds content after) */
+    
+    font-size: 4rem;
+    /* What is this? Very large quote mark */
+    
+    color: #667eea;
+    /* What is this? Purple color */
+    
+    position: absolute;
+    /* What is this? Positioned absolutely */
+    
+    right: -1rem;
+    /* What is this? Position from right */
+    
+    bottom: 0;
+    /* What is this? Position from bottom */
+    
+    opacity: 0.3;
+    /* What is this? Semi-transparent */
+}
+
+/* Button Container Styles */
+/* What is this? Styles for button container */
+.button-container {
+    text-align: center;
+    /* What is this? Centers buttons */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below buttons */
+    
+    display: flex;
+    /* What is this? Flexbox layout */
+    /* flex = Flexible box layout */
+    
+    gap: 1rem;
+    /* What is this? Space between buttons */
+    
+    justify-content: center;
+    /* What is this? Centers buttons horizontally */
+}
+
+/* Button Styles */
+/* What is this? Styles for buttons */
+.btn {
+    display: inline-block;
+    /* What is this? Inline but can set width/height */
+    
+    padding: 1rem 2rem;
+    /* What is this? Space inside button */
+    /* 1rem top/bottom, 2rem left/right */
+    
+    background-color: white;
+    /* What is this? White background */
+    
+    color: #667eea;
+    /* What is this? Purple text */
+    
+    text-decoration: none;
+    /* What is this? Removes underline from links */
+    
+    border: 2px solid white;
+    /* What is this? White border */
+    
+    border-radius: 50px;
+    /* What is this? Very rounded corners (pill shape) */
+    /* 50px = Creates rounded pill shape */
+    
+    cursor: pointer;
+    /* What is this? Pointer cursor on hover */
+    
+    font-size: 1.1rem;
+    /* What is this? Font size */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    transition: all 0.3s ease;
+    /* What is this? Smooth animation for all properties */
+    /* all = All CSS properties */
+    /* 0.3s = Animation duration */
+}
+
+.btn:hover {
+    background-color: #667eea;
+    /* What is this? Purple background on hover */
+    
+    color: white;
+    /* What is this? White text on hover */
+    
+    transform: scale(1.05);
+    /* What is this? Slightly larger on hover */
+    /* scale(1.05) = 105% of original size */
+}
+
+.btn:active {
+    transform: scale(0.98);
+    /* What is this? Slightly smaller when clicked */
+    /* :active = When button is being clicked */
+}
+
+.btn.secondary {
+    background-color: transparent;
+    /* What is this? Transparent background */
+    
+    color: white;
+    /* What is this? White text */
+    
+    border-color: white;
+    /* What is this? White border */
+}
+
+.btn.secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* What is this? Semi-transparent white on hover */
+    /* rgba = Red, Green, Blue, Alpha (transparency) */
+    /* 0.2 = 20% opacity */
+}
+
+/* Info Section Styles */
+/* What is this? Styles for information section */
+.info-section {
+    background: rgba(255, 255, 255, 0.1);
+    /* What is this? Semi-transparent white */
+    /* rgba = Red, Green, Blue, Alpha */
+    /* 0.1 = 10% opacity (90% transparent) */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    
+    backdrop-filter: blur(10px);
+    /* What is this? Blur effect behind element */
+    /* Creates glass-like effect */
+    
+    margin-top: 2rem;
+    /* What is this? Space above */
+}
+
+.info-section p {
+    color: white;
+    /* What is this? White text */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below paragraph */
+    
+    font-size: 1.1rem;
+    /* What is this? Slightly larger font */
+}
+
+.features {
+    margin-top: 1.5rem;
+    /* What is this? Space above features */
+}
+
+.features ul {
+    list-style: none;
+    /* What is this? Removes default bullet points */
+    
+    padding-left: 0;
+    /* What is this? No left padding */
+}
+
+.features li {
+    color: white;
+    /* What is this? White text */
+    
+    padding: 0.5rem 0;
+    /* What is this? Space above and below */
+    
+    font-size: 1.1rem;
+    /* What is this? Font size */
+    
+    position: relative;
+    /* What is this? Allows positioning */
+    
+    padding-left: 1.5rem;
+    /* What is this? Space on left for custom bullet */
+}
+
+.features li::before {
+    content: "✓ ";
+    /* What is this? Checkmark before each item */
+    /* ::before = Pseudo-element */
+    
+    color: #4CAF50;
+    /* What is this? Green color */
+    
+    font-weight: bold;
+    /* What is this? Bold checkmark */
+    
+    position: absolute;
+    /* What is this? Positioned absolutely */
+    
+    left: 0;
+    /* What is this? At the left */
+}
+
+/* Responsive Design */
+/* What is this? Makes page work on mobile devices */
+@media (max-width: 768px) {
+    /* What is this? Media query for screens smaller than 768px */
+    /* @media = Applies styles only when condition is true */
+    
+    .container {
+        padding: 1rem;
+        /* What is this? Less padding on mobile */
+    }
+    
+    h1 {
+        font-size: 2rem;
+        /* What is this? Smaller heading on mobile */
+    }
+    
+    .quote-card {
+        padding: 2rem;
+        /* What is this? Less padding on mobile */
+    }
+    
+    blockquote {
+        font-size: 1.2rem;
+        /* What is this? Smaller font on mobile */
+    }
+    
+    .button-container {
+        flex-direction: column;
+        /* What is this? Stacks buttons vertically */
+    }
+    
+    .btn {
+        width: 100%;
+        /* What is this? Full width buttons on mobile */
+    }
+}
+

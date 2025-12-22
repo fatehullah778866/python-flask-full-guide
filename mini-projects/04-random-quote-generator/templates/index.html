@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
+    <title>Random Quote Generator</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
+    <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
+        <h1>Random Quote Generator 💭</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
+        
+        <!-- Quote Display Card -->
+        <!-- What is this? A card/box to display the quote -->
+        <div class="quote-card">
+            <!-- What is this? Container for the quote -->
+            <!-- div = Box for quote display -->
+            <!-- class="quote-card" = CSS class for styling -->
+            
+            <div class="quote-icon">💬</div>
+            <!-- What is this? Quote icon/emoji -->
+            <!-- div = Container for icon -->
+            <!-- class="quote-icon" = CSS class for icon styling -->
+            <!-- This adds a visual element to the quote -->
+            
+            <blockquote class="quote-text">
+                <!-- What is this? HTML element for quotes -->
+                <!-- blockquote = Semantic HTML element for quotations -->
+                <!-- class="quote-text" = CSS class for quote styling -->
+                
+                {{ quote }}
+                <!-- What is this? Jinja2 template syntax to display the quote -->
+                <!-- {{ quote }} = Displays the quote variable passed from Python -->
+                <!-- Jinja2 = Template engine Flask uses -->
+                <!-- The quote comes from app.py: render_template('index.html', quote=random_quote) -->
+                <!-- Flask replaces {{ quote }} with the actual quote text -->
+                
+            </blockquote>
+            <!-- What is this? Closes the blockquote element -->
+            
+        </div>
+        <!-- What is this? Closes the quote-card div -->
+        
+        <!-- Button to Get New Quote -->
+        <!-- What is this? Button that gets a new random quote -->
+        <div class="button-container">
+            <!-- What is this? Container for buttons -->
+            <!-- div = Box to hold buttons -->
+            <!-- class="button-container" = CSS class for button styling -->
+            
+            <a href="{{ url_for('index') }}" class="btn">
+                <!-- What is this? Link that acts like a button -->
+                <!-- a = Anchor tag (creates a link) -->
+                <!-- href = Where the link goes -->
+                <!-- url_for('index') = Flask function to generate URL for 'index' route -->
+                <!-- This creates a link to the home page (which shows a new random quote) -->
+                <!-- class="btn" = CSS class for button styling -->
+                
+                🔄 Get New Quote
+                <!-- What is this? Button text with emoji -->
+                <!-- When clicked, goes to home page and shows new quote -->
+                
+            </a>
+            <!-- What is this? Closes the anchor tag -->
+            
+            <a href="{{ url_for('new_quote') }}" class="btn secondary">
+                <!-- What is this? Alternative button for new quote -->
+                <!-- href = Link to /new-quote route -->
+                <!-- url_for('new_quote') = Generates URL for new_quote route -->
+                <!-- class="btn secondary" = CSS class for secondary button styling -->
+                
+                ✨ Another Quote
+                <!-- What is this? Button text -->
+                <!-- Alternative way to get a new quote -->
+                
+            </a>
+            <!-- What is this? Closes the anchor tag -->
+            
+        </div>
+        <!-- What is this? Closes the button-container div -->
+        
+        <!-- Information Section -->
+        <!-- What is this? Section with information about the app -->
+        <div class="info-section">
+            <!-- What is this? Container for information -->
+            <!-- div = Box for info content -->
+            <!-- class="info-section" = CSS class for info styling -->
+            
+            <h2>About This App</h2>
+            <!-- What is this? Subheading -->
+            <!-- h2 = Second level heading (smaller than h1) -->
+            
+            <p>
+                <!-- What is this? Paragraph of text -->
+                <!-- p = Paragraph tag -->
+                
+                This app displays random inspirational quotes to motivate and inspire you!
+                <!-- What is this? Description text -->
+                <!-- Explains what the app does -->
+                
+            </p>
+            <!-- What is this? Closes the paragraph -->
+            
+            <p>
+                <!-- What is this? Another paragraph -->
+                
+                Click the button above to get a new random quote each time!
+                <!-- What is this? Instructions for user -->
+                <!-- Tells user how to use the app -->
+                
+            </p>
+            <!-- What is this? Closes the paragraph -->
+            
+            <div class="features">
+                <!-- What is this? Container for features list -->
+                <!-- div = Box for features -->
+                <!-- class="features" = CSS class for features styling -->
+                
+                <h3>Features:</h3>
+                <!-- What is this? Features heading -->
+                <!-- h3 = Third level heading -->
+                
+                <ul>
+                    <!-- What is this? Unordered list (bullet points) -->
+                    <!-- ul = Unordered list -->
+                    
+                    <li>20+ Inspirational Quotes</li>
+                    <!-- What is this? First feature -->
+                    <!-- li = List item -->
+                    
+                    <li>Random Selection</li>
+                    <!-- What is this? Second feature -->
+                    
+                    <li>Beautiful Design</li>
+                    <!-- What is this? Third feature -->
+                    
+                    <li>Easy to Use</li>
+                    <!-- What is this? Fourth feature -->
+                    
+                </ul>
+                <!-- What is this? Closes the unordered list -->
+                
+            </div>
+            <!-- What is this? Closes the features div -->
+            
+        </div>
+        <!-- What is this? Closes the info-section div -->
+        
+    </div>
+    <!-- What is this? Closes the container div -->
+</body>
+</html>
+
