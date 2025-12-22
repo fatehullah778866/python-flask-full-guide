@@ -1,0 +1,455 @@
+/* Simple Calculator - Stylesheet */
+/* This file makes our calculator look nice! */
+
+/* Reset and Base Styles */
+/* What is this? Removes default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Explanation:
+   - * = Selects all elements
+   - margin: 0 = No space outside elements
+   - padding: 0 = No space inside elements
+   - box-sizing: border-box = Includes padding/border in width/height
+*/
+
+/* Body Styles */
+/* What is this? Styles for the entire page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* What is this? Font family (what text looks like) */
+    /* Segoe UI = Modern, clean font */
+    
+    line-height: 1.6;
+    /* What is this? Space between lines of text */
+    /* 1.6 = 1.6 times the font size (makes text easier to read) */
+    
+    color: #333;
+    /* What is this? Text color */
+    /* #333 = Dark gray (almost black) */
+    
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* What is this? Background gradient */
+    /* linear-gradient = Smooth color transition */
+    /* Creates a beautiful purple gradient background */
+    
+    min-height: 100vh;
+    /* What is this? Minimum height */
+    /* 100vh = 100% of viewport height (full screen) */
+    
+    padding: 2rem 0;
+    /* What is this? Space above and below body */
+}
+
+/* Container Styles */
+/* What is this? Styles for the main container */
+.container {
+    max-width: 600px;
+    /* What is this? Maximum width */
+    /* 600px = 600 pixels wide */
+    /* Prevents content from being too wide */
+    
+    margin: 0 auto;
+    /* What is this? Centers the container */
+    /* margin: 0 auto = No top/bottom margin, equal left/right (centers) */
+    
+    padding: 2rem;
+    /* What is this? Space inside container */
+    /* 2rem = 2 times root font size (about 32px) */
+}
+
+/* Heading Styles */
+/* What is this? Styles for headings */
+h1 {
+    color: white;
+    /* What is this? White text */
+    
+    text-align: center;
+    /* What is this? Text alignment */
+    /* center = Centers the text */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below heading */
+    
+    font-size: 2.5rem;
+    /* What is this? Font size */
+    /* 2.5rem = 2.5 times root font size (large) */
+    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* What is this? Text shadow effect */
+    /* Creates depth, makes text stand out */
+}
+
+h2 {
+    color: #333;
+    /* What is this? Dark gray text */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+}
+
+h3 {
+    color: white;
+    /* What is this? White text */
+    
+    margin-top: 2rem;
+    /* What is this? Space above heading */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+}
+
+/* Form Styles */
+/* What is this? Styles for the form */
+form {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside form */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    /* 10px = How round the corners are */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* What is this? Shadow effect */
+    /* Creates depth, makes form look elevated */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below form */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    /* What is this? Space between form groups */
+}
+
+label {
+    display: block;
+    /* What is this? Makes label take full width */
+    /* block = Element takes full width, starts on new line */
+    
+    margin-bottom: 0.5rem;
+    /* What is this? Space below label */
+    
+    font-weight: bold;
+    /* What is this? Makes text bold */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+    
+    font-size: 1.1rem;
+    /* What is this? Slightly larger font */
+}
+
+/* Input Styles */
+/* What is this? Styles for input fields */
+input[type="number"] {
+    width: 100%;
+    /* What is this? Full width */
+    /* 100% = Takes up all available width */
+    
+    padding: 0.75rem;
+    /* What is this? Space inside input */
+    
+    border: 2px solid #ddd;
+    /* What is this? Border around input */
+    /* 2px = Border thickness */
+    /* solid = Solid line (not dashed) */
+    /* #ddd = Light gray color */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    transition: border-color 0.3s;
+    /* What is this? Smooth color change */
+    /* When border color changes, it animates over 0.3 seconds */
+}
+
+input[type="number"]:focus {
+    outline: none;
+    /* What is this? Removes default browser outline */
+    
+    border-color: #667eea;
+    /* What is this? Purple border when focused */
+    /* :focus = When user clicks in the input */
+}
+
+/* Select (Dropdown) Styles */
+/* What is this? Styles for dropdown/select element */
+select {
+    width: 100%;
+    /* What is this? Full width */
+    
+    padding: 0.75rem;
+    /* What is this? Space inside select */
+    
+    border: 2px solid #ddd;
+    /* What is this? Border around select */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    background-color: white;
+    /* What is this? White background */
+    
+    cursor: pointer;
+    /* What is this? Pointer cursor on hover */
+    /* Shows hand icon when hovering */
+    
+    transition: border-color 0.3s;
+    /* What is this? Smooth color change */
+}
+
+select:focus {
+    outline: none;
+    /* What is this? Removes default browser outline */
+    
+    border-color: #667eea;
+    /* What is this? Purple border when focused */
+}
+
+/* Button Styles */
+/* What is this? Styles for buttons */
+.btn {
+    width: 100%;
+    /* What is this? Full width button */
+    
+    padding: 1rem;
+    /* What is this? Space inside button */
+    
+    background-color: #667eea;
+    /* What is this? Purple background */
+    
+    color: white;
+    /* What is this? White text */
+    
+    border: none;
+    /* What is this? No border */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    cursor: pointer;
+    /* What is this? Pointer cursor on hover */
+    
+    font-size: 1.2rem;
+    /* What is this? Larger font */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    transition: background-color 0.3s;
+    /* What is this? Smooth color change */
+}
+
+.btn:hover {
+    background-color: #5568d3;
+    /* What is this? Darker purple on hover */
+    /* :hover = When mouse is over button */
+}
+
+.btn:active {
+    transform: scale(0.98);
+    /* What is this? Slightly smaller when clicked */
+    /* :active = When button is being clicked */
+    /* scale(0.98) = Makes button 98% of original size */
+}
+
+/* Error Message Styles */
+/* What is this? Styles for error messages */
+.error-message {
+    background: #f8d7da;
+    /* What is this? Light red background */
+    
+    color: #721c24;
+    /* What is this? Dark red text */
+    
+    padding: 1rem;
+    /* What is this? Space inside */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    border-left: 4px solid #dc3545;
+    /* What is this? Red left border */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below error */
+}
+
+.error-message p {
+    margin: 0;
+    /* What is this? No margin on paragraph */
+}
+
+/* Result Box Styles */
+/* What is this? Styles for result display */
+.result-box {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* What is this? Shadow effect */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below result */
+    
+    text-align: center;
+    /* What is this? Centers content */
+}
+
+.calculation {
+    display: flex;
+    /* What is this? Flexbox layout */
+    /* flex = Flexible box layout */
+    
+    align-items: center;
+    /* What is this? Centers items vertically */
+    
+    justify-content: center;
+    /* What is this? Centers items horizontally */
+    
+    gap: 1rem;
+    /* What is this? Space between elements */
+    
+    margin: 2rem 0;
+    /* What is this? Space above and below */
+    
+    font-size: 1.5rem;
+    /* What is this? Larger font */
+}
+
+.number {
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    color: #667eea;
+    /* What is this? Purple color */
+    
+    font-size: 2rem;
+    /* What is this? Very large font */
+}
+
+.operator {
+    font-size: 2rem;
+    /* What is this? Large font for operator */
+}
+
+.equals {
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    color: #333;
+    /* What is this? Dark gray */
+    
+    font-size: 2rem;
+    /* What is this? Large font */
+}
+
+.result {
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    color: #28a745;
+    /* What is this? Green color */
+    
+    font-size: 2.5rem;
+    /* What is this? Very large font */
+}
+
+.result-text {
+    color: #666;
+    /* What is this? Medium gray text */
+    
+    font-size: 1.2rem;
+    /* What is this? Larger font */
+    
+    margin-top: 1rem;
+    /* What is this? Space above */
+}
+
+.result-text strong {
+    color: #28a745;
+    /* What is this? Green color for result */
+    
+    font-size: 1.5rem;
+    /* What is this? Larger font */
+}
+
+/* Instructions Styles */
+/* What is this? Styles for instructions section */
+.instructions {
+    background: rgba(255, 255, 255, 0.9);
+    /* What is this? Semi-transparent white */
+    /* rgba = Red, Green, Blue, Alpha (transparency) */
+    /* 0.9 = 90% opaque (10% transparent) */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+}
+
+.instructions ol {
+    margin-left: 2rem;
+    /* What is this? Indents list */
+    
+    margin-top: 1rem;
+    /* What is this? Space above list */
+}
+
+.instructions li {
+    margin-bottom: 0.5rem;
+    /* What is this? Space between list items */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+}
+
+/* Responsive Design */
+/* What is this? Makes page work on mobile devices */
+@media (max-width: 768px) {
+    /* What is this? Media query for screens smaller than 768px */
+    /* @media = Applies styles only when condition is true */
+    
+    .container {
+        padding: 1rem;
+        /* What is this? Less padding on mobile */
+    }
+    
+    h1 {
+        font-size: 2rem;
+        /* What is this? Smaller heading on mobile */
+    }
+    
+    .calculation {
+        flex-direction: column;
+        /* What is this? Stacks elements vertically */
+        
+        gap: 0.5rem;
+        /* What is this? Less space between elements */
+    }
+    
+    .number, .operator, .equals, .result {
+        font-size: 1.5rem;
+        /* What is this? Smaller fonts on mobile */
+    }
+}
+

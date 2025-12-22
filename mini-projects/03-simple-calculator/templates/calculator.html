@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
+    <title>Simple Calculator</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
+    <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
+        <h1>Simple Calculator 🧮</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
+        
+        <!-- Form Section -->
+        <!-- What is this? A form where users can enter numbers and select operation -->
+        <form action="/calculate" method="POST">
+            <!-- What is this? HTML form element -->
+            <!-- action="/calculate" = Where to send the form data (the route) -->
+            <!-- method="POST" = Send data securely (not in URL) -->
+            <!-- POST = Data is hidden, GET = Data appears in URL -->
+            <!-- We use POST for form submissions -->
+            
+            <!-- First Number Input -->
+            <div class="form-group">
+                <!-- What is this? A group for form elements -->
+                <!-- Groups the label and input together -->
+                
+                <label for="num1">First Number:</label>
+                <!-- What is this? Label for the input field -->
+                <!-- for="num1" = Connects to input with id="num1" -->
+                <!-- This is what users see: "First Number:" -->
+                
+                <input type="number" 
+                       id="num1" 
+                       name="num1" 
+                       step="any"
+                       placeholder="Enter first number" 
+                       value="{{ num1 if num1 else '' }}"
+                       required>
+                <!-- What is this? Number input field -->
+                <!-- type="number" = Number input (not text) -->
+                <!-- id="num1" = Unique identifier for this input -->
+                <!-- name="num1" = Name of the data when form is submitted -->
+                <!-- step="any" = Allows decimal numbers (not just integers) -->
+                <!-- placeholder="..." = Hint text inside the input -->
+                <!-- value="..." = Default value (keeps value after submission) -->
+                <!-- {{ num1 if num1 else '' }} = Jinja2: show num1 if it exists, else empty -->
+                <!-- required = User must fill this in before submitting -->
+                
+            </div>
+            
+            <!-- Operation Selection -->
+            <div class="form-group">
+                <!-- What is this? Group for operation dropdown -->
+                
+                <label for="operation">Operation:</label>
+                <!-- What is this? Label for the dropdown -->
+                <!-- for="operation" = Connects to select with id="operation" -->
+                
+                <select id="operation" name="operation" required>
+                    <!-- What is this? Dropdown/select element -->
+                    <!-- id="operation" = Unique identifier -->
+                    <!-- name="operation" = Name of the data when form is submitted -->
+                    <!-- required = User must select an option -->
+                    
+                    <option value="">Select an operation</option>
+                    <!-- What is this? Default/placeholder option -->
+                    <!-- value="" = Empty value (no selection) -->
+                    <!-- This is what users see first -->
+                    
+                    <option value="add" {% if operation == 'add' %}selected{% endif %}>➕ Addition (+)</option>
+                    <!-- What is this? Addition option -->
+                    <!-- value="add" = Value sent when this is selected -->
+                    <!-- {% if operation == 'add' %}selected{% endif %} = Jinja2: select this if operation is 'add' -->
+                    <!-- This keeps the selection after form submission -->
+                    <!-- selected = Makes this option selected by default -->
+                    
+                    <option value="subtract" {% if operation == 'subtract' %}selected{% endif %}>➖ Subtraction (-)</option>
+                    <!-- What is this? Subtraction option -->
+                    <!-- value="subtract" = Value sent when this is selected -->
+                    <!-- Same Jinja2 logic to keep selection -->
+                    
+                    <option value="multiply" {% if operation == 'multiply' %}selected{% endif %}>✖️ Multiplication (×)</option>
+                    <!-- What is this? Multiplication option -->
+                    <!-- value="multiply" = Value sent when this is selected -->
+                    
+                    <option value="divide" {% if operation == 'divide' %}selected{% endif %}>➗ Division (÷)</option>
+                    <!-- What is this? Division option -->
+                    <!-- value="divide" = Value sent when this is selected -->
+                    
+                </select>
+                <!-- What is this? Closes the select element -->
+                
+            </div>
+            
+            <!-- Second Number Input -->
+            <div class="form-group">
+                <!-- What is this? Group for second number input -->
+                
+                <label for="num2">Second Number:</label>
+                <!-- What is this? Label for the second input field -->
+                
+                <input type="number" 
+                       id="num2" 
+                       name="num2" 
+                       step="any"
+                       placeholder="Enter second number" 
+                       value="{{ num2 if num2 else '' }}"
+                       required>
+                <!-- What is this? Number input field for second number -->
+                <!-- Same structure as first number input -->
+                <!-- value="{{ num2 if num2 else '' }}" = Keeps value after submission -->
+                
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn">Calculate</button>
+            <!-- What is this? Submit button -->
+            <!-- type="submit" = Button that submits the form -->
+            <!-- class="btn" = CSS class for styling (makes it look like a button) -->
+            <!-- When clicked, form is submitted to /calculate -->
+            
+        </form>
+        <!-- What is this? Closes the form element -->
+        
+        <!-- Error Message Display -->
+        {% if error %}
+        <!-- What is this? Jinja2 conditional -->
+        <!-- {% if error %} = If error variable exists, show this -->
+        <!-- Jinja2 = Template engine Flask uses -->
+        
+        <div class="error-message">
+            <!-- What is this? Container for error message -->
+            <!-- div = Box for error message -->
+            <!-- class="error-message" = CSS class for error styling -->
+            
+            <p>❌ {{ error }}</p>
+            <!-- What is this? Error message paragraph -->
+            <!-- {{ error }} = Displays the error variable -->
+            <!-- Jinja2 replaces {{ error }} with actual error message -->
+            
+        </div>
+        {% endif %}
+        <!-- What is this? Closes the if statement -->
+        <!-- {% endif %} = End of if block -->
+        
+        <!-- Result Display -->
+        {% if result is not none %}
+        <!-- What is this? Jinja2 conditional for result -->
+        <!-- {% if result is not none %} = If result exists and is not None -->
+        <!-- Shows result only if calculation was successful -->
+        
+        <div class="result-box">
+            <!-- What is this? Container for result -->
+            <!-- div = Box for result display -->
+            <!-- class="result-box" = CSS class for result styling -->
+            
+            <h2>Result:</h2>
+            <!-- What is this? Result heading -->
+            <!-- h2 = Second level heading -->
+            
+            <div class="calculation">
+                <!-- What is this? Container for calculation display -->
+                
+                <span class="number">{{ num1 }}</span>
+                <!-- What is this? First number display -->
+                <!-- {{ num1 }} = Displays first number -->
+                
+                <span class="operator">
+                    <!-- What is this? Operator symbol display -->
+                    <!-- span = Inline container for operator -->
+                    
+                    {% if operation == 'add' %}➕{% elif operation == 'subtract' %}➖{% elif operation == 'multiply' %}✖️{% elif operation == 'divide' %}➗{% endif %}
+                    <!-- What is this? Jinja2 conditional for operator symbol -->
+                    <!-- Shows different emoji based on operation -->
+                    <!-- {% if %} = Conditional statement in Jinja2 -->
+                    <!-- {% elif %} = Else if in Jinja2 -->
+                    <!-- {% endif %} = End of if block -->
+                    
+                </span>
+                
+                <span class="number">{{ num2 }}</span>
+                <!-- What is this? Second number display -->
+                <!-- {{ num2 }} = Displays second number -->
+                
+                <span class="equals">=</span>
+                <!-- What is this? Equals sign -->
+                <!-- span = Inline container -->
+                
+                <span class="result">{{ result }}</span>
+                <!-- What is this? Final result display -->
+                <!-- {{ result }} = Displays the calculated result -->
+                <!-- This is the answer! -->
+                
+            </div>
+            
+            <p class="result-text">The answer is: <strong>{{ result }}</strong></p>
+            <!-- What is this? Result text paragraph -->
+            <!-- strong = Makes text bold -->
+            <!-- Shows the result in a readable format -->
+            
+        </div>
+        {% endif %}
+        <!-- What is this? Closes the if statement -->
+        <!-- {% endif %} = End of if block -->
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <!-- What is this? Container for instructions -->
+            <!-- div = Box for instructions -->
+            
+            <h3>How to Use:</h3>
+            <!-- What is this? Instructions heading -->
+            <!-- h3 = Third level heading -->
+            
+            <ol>
+                <!-- What is this? Ordered list (numbered) -->
+                <!-- ol = Ordered list -->
+                
+                <li>Enter the first number</li>
+                <!-- What is this? First instruction -->
+                <!-- li = List item -->
+                
+                <li>Select an operation (add, subtract, multiply, or divide)</li>
+                <!-- What is this? Second instruction -->
+                
+                <li>Enter the second number</li>
+                <!-- What is this? Third instruction -->
+                
+                <li>Click "Calculate" to see the result</li>
+                <!-- What is this? Fourth instruction -->
+                
+            </ol>
+            <!-- What is this? Closes the ordered list -->
+            
+        </div>
+        <!-- What is this? Closes the instructions div -->
+        
+    </div>
+    <!-- What is this? Closes the container div -->
+</body>
+</html>
+
