@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>👤 User Registration System</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Welcome Message -->
+        {% if logged_in %}
+            <div class="welcome-box">
+                <h2>Welcome, {{ username }}! 👋</h2>
+                <p>You are successfully logged in.</p>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </div>
+        {% else %}
+            <div class="welcome-box">
+                <h2>Welcome! 👋</h2>
+                <p>Please register or login to continue.</p>
+                <div class="auth-buttons">
+                    <a href="{{ url_for('register') }}" class="btn btn-register">Register</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+                </div>
+            </div>
+        {% endif %}
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Click "Register" to create a new account</li>
+                <li>Fill in username, email, and password</li>
+                <li>Click "Login" to access your account</li>
+                <li>Click "Logout" when you're done</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+

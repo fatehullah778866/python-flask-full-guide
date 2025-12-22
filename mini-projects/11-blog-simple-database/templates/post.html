@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Simple Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="post-view">
+            <a href="{{ url_for('index') }}" class="btn btn-back">← Back to Posts</a>
+            
+            <h1>{{ post.title }}</h1>
+            <p class="post-date">{{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}</p>
+            
+            <div class="post-content-full">
+                <p>{{ post.content|replace('\n', '<br>')|safe }}</p>
+            </div>
+            
+            <a href="{{ url_for('index') }}" class="btn btn-back">← Back to Posts</a>
+        </div>
+    </div>
+</body>
+</html>
+
