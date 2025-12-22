@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comment System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>💬 Comment System</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Add Comment Form -->
+        <div class="comment-form-container">
+            <h2>Add a Comment</h2>
+            <form action="{{ url_for('add_comment') }}" method="POST" class="comment-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           class="form-input"
+                           placeholder="Enter your name..."
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" 
+                           id="email" 
+                           name="email" 
+                           class="form-input"
+                           placeholder="Enter your email..."
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" 
+                              name="comment" 
+                              rows="5" 
+                              class="form-textarea"
+                              placeholder="Write your comment here..."
+                              required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-submit">Submit Comment</button>
+            </form>
+        </div>
+        
+        <!-- Comments List -->
+        <div class="comments-container">
+            <h2>Comments ({{ comments|length }})</h2>
+            
+            {% if comments %}
+                {% for comment in comments %}
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <h3 class="comment-name">{{ comment.name }}</h3>
+                            <span class="comment-date">{{ comment.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                        </div>
+                        <p class="comment-email">{{ comment.email }}</p>
+                        <p class="comment-text">{{ comment.comment_text|replace('\n', '<br>')|safe }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-comments">
+                    <p>No comments yet. Be the first to comment!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

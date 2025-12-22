@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting/Polling System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🗳️ Voting/Polling System</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Create Poll Button -->
+        <div class="actions">
+            <a href="{{ url_for('create_poll') }}" class="btn btn-create">➕ Create New Poll</a>
+        </div>
+        
+        <!-- Polls List -->
+        {% if polls %}
+            <div class="polls-container">
+                {% for poll in polls %}
+                    <div class="poll-card">
+                        <h2>{{ poll.question }}</h2>
+                        <p class="poll-date">Created: {{ poll.date_created.strftime('%B %d, %Y') }}</p>
+                        
+                        {% if poll.id in voted_polls %}
+                            <!-- Show Results (User Already Voted) -->
+                            <div class="poll-results">
+                                <div class="result-item">
+                                    <div class="result-header">
+                                        <span class="option-name">{{ poll.option1 }}</span>
+                                        <span class="vote-count">{{ poll.votes_option1 }} votes</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        {% set total_votes = poll.votes_option1 + poll.votes_option2 %}
+                                        {% if total_votes > 0 %}
+                                            {% set percentage = (poll.votes_option1 / total_votes * 100)|round %}
+                                        {% else %}
+                                            {% set percentage = 0 %}
+                                        {% endif %}
+                                        <div class="progress-fill" style="width: {{ percentage }}%"></div>
+                                    </div>
+                                    <span class="percentage">{{ percentage }}%</span>
+                                </div>
+                                
+                                <div class="result-item">
+                                    <div class="result-header">
+                                        <span class="option-name">{{ poll.option2 }}</span>
+                                        <span class="vote-count">{{ poll.votes_option2 }} votes</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        {% set total_votes = poll.votes_option1 + poll.votes_option2 %}
+                                        {% if total_votes > 0 %}
+                                            {% set percentage = (poll.votes_option2 / total_votes * 100)|round %}
+                                        {% else %}
+                                            {% set percentage = 0 %}
+                                        {% endif %}
+                                        <div class="progress-fill" style="width: {{ percentage }}%"></div>
+                                    </div>
+                                    <span class="percentage">{{ percentage }}%</span>
+                                </div>
+                                
+                                <p class="voted-message">✓ You voted for: <strong>{{ poll.option1 if voted_polls[poll.id] == 1 else poll.option2 }}</strong></p>
+                            </div>
+                        {% else %}
+                            <!-- Show Voting Form (User Hasn't Voted) -->
+                            <form action="{{ url_for('vote', poll_id=poll.id) }}" method="POST" class="poll-form">
+                                <div class="poll-options">
+                                    <label class="option-label">
+                                        <input type="radio" name="option" value="1" required>
+                                        <span class="option-text">{{ poll.option1 }}</span>
+                                    </label>
+                                    <label class="option-label">
+                                        <input type="radio" name="option" value="2" required>
+                                        <span class="option-text">{{ poll.option2 }}</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-vote">Vote</button>
+                            </form>
+                            
+                            <!-- Show Current Vote Counts -->
+                            <div class="vote-counts">
+                                <p>{{ poll.votes_option1 + poll.votes_option2 }} total votes</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No polls yet. <a href="{{ url_for('create_poll') }}">Create your first poll!</a></p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
