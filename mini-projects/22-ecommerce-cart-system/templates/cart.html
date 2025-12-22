@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 Shopping Cart</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-continue">Continue Shopping</a>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% if cart_items %}
+            <div class="cart-container">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td>
+                                    <div class="product-info">
+                                        <span class="product-image">{{ item.product.image }}</span>
+                                        <div>
+                                            <strong>{{ item.product.name }}</strong>
+                                            <p class="product-description">{{ item.product.description }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${{ "%.2f"|format(item.product.price) }}</td>
+                                <td>
+                                    <form action="{{ url_for('update_cart', product_id=item.product.id) }}" method="POST" class="update-form">
+                                        <input type="number" 
+                                               name="quantity" 
+                                               value="{{ item.quantity }}" 
+                                               min="0" 
+                                               max="10"
+                                               class="quantity-input">
+                                        <button type="submit" class="btn btn-update">Update</button>
+                                    </form>
+                                </td>
+                                <td>${{ "%.2f"|format(item.subtotal) }}</td>
+                                <td>
+                                    <form action="{{ url_for('remove_from_cart', product_id=item.product.id) }}" method="POST" class="remove-form">
+                                        <button type="submit" class="btn btn-remove">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="cart-summary">
+                    <div class="total-section">
+                        <h2>Total: ${{ "%.2f"|format(cart_total) }}</h2>
+                        <button class="btn btn-checkout">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <h2>Your cart is empty</h2>
+                <p>Add some products to your cart to get started!</p>
+                <a href="{{ url_for('index') }}" class="btn btn-continue">Continue Shopping</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

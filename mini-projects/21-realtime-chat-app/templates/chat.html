@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>💬 Real-time Chat</h1>
+                <p class="username-display">Logged in as: <strong>{{ username }}</strong></p>
+            </div>
+            
+            <div id="messages" class="messages-container">
+                <!-- Messages will appear here -->
+            </div>
+            
+            <div class="message-input-container">
+                <input type="text" 
+                       id="messageInput" 
+                       class="message-input"
+                       placeholder="Type your message..."
+                       autocomplete="off">
+                <button id="sendButton" class="btn btn-send">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Step 1: Connect to WebSocket Server
+        // What is this? Establishing connection to the server
+        // Think of it like: "Connect to the chat server"
+        const socket = io();
+        // Explanation:
+        // - io() = Creates WebSocket connection
+        // - socket = The connection object
+        // - This connects to the Flask-SocketIO server
+        // - Connection happens automatically when page loads
+        
+        // Step 2: Get DOM Elements
+        // What is this? Getting references to HTML elements
+        // Think of it like: "Find the message box and send button"
+        const messagesContainer = document.getElementById('messages');
+        // Explanation:
+        // - document.getElementById('messages') = Finds element with id 'messages'
+        // - messagesContainer = Reference to the messages div
+        // - We'll add messages to this container
+        
+        const messageInput = document.getElementById('messageInput');
+        // Explanation:
+        // - document.getElementById('messageInput') = Finds input field
+        // - messageInput = Reference to the message input
+        // - We'll get the message text from here
+        
+        const sendButton = document.getElementById('sendButton');
+        // Explanation:
+        // - document.getElementById('sendButton') = Finds send button
+        // - sendButton = Reference to the send button
+        // - We'll listen for clicks on this button
+        
+        // Step 3: Function to Add Message to Chat
+        // What is this? Displaying a message in the chat
+        // Think of it like: "Show a message in the chat window"
+        function addMessage(data) {
+            // Explanation:
+            // - function addMessage(data) = Function to add message
+            // - data = Object with message information (username, message, timestamp)
+            
+            const messageDiv = document.createElement('div');
+            // Explanation:
+            // - document.createElement('div') = Creates new div element
+            // - messageDiv = The new div element
+            // - We'll put the message content in this div
+            
+            messageDiv.className = 'message';
+            // Explanation:
+            // - .className = Sets CSS class
+            // - 'message' = Class name for styling
+            // - This applies CSS styles to the message
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">
+                    <span class="message-username">${data.username}</span>
+                    <span class="message-timestamp">${data.timestamp}</span>
+                </div>
+                <div class="message-text">${data.message}</div>
+            `;
+            // Explanation:
+            // - .innerHTML = Sets HTML content
+            // - Template literal (backticks) = Multi-line string
+            // - ${data.username} = Inserts username
+            // - ${data.timestamp} = Inserts timestamp
+            // - ${data.message} = Inserts message text
+            // - This creates the message HTML structure
+            
+            messagesContainer.appendChild(messageDiv);
+            // Explanation:
+            // - .appendChild() = Adds element as child
+            // - messageDiv = The message element
+            // - messagesContainer = The messages container
+            // - This adds the message to the chat window
+            
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // Explanation:
+            // - .scrollTop = Scroll position
+            // - .scrollHeight = Total height of content
+            // - This scrolls to the bottom to show the latest message
+            // - User always sees the newest message!
+        }
+        
+        // Step 4: Listen for Incoming Messages
+        // What is this? Receiving messages from the server
+        // Think of it like: "When server sends a message, show it"
+        socket.on('message', function(data) {
+            // Explanation:
+            // - socket.on('message', ...) = Listens for 'message' event
+            // - 'message' = Event name (server emits this)
+            // - function(data) = Function that runs when message received
+            // - data = Message data from server
+            
+            addMessage(data);
+            // Explanation:
+            // - addMessage(data) = Calls our function to display message
+            // - This shows the message in the chat window
+        });
+        
+        // Step 5: Listen for User Joined Events
+        // What is this? When someone joins the chat
+        // Think of it like: "When someone joins, show a notification"
+        socket.on('user_joined', function(data) {
+            // Explanation:
+            // - socket.on('user_joined', ...) = Listens for 'user_joined' event
+            // - 'user_joined' = Event name (server emits this when user joins)
+            // - function(data) = Function that runs when event received
+            // - data = Data about the user who joined
+            
+            addMessage(data);
+            // Explanation:
+            // - addMessage(data) = Shows notification in chat
+            // - Displays "{username} joined the chat"
+        });
+        
+        // Step 6: Listen for User Left Events
+        // What is this? When someone leaves the chat
+        // Think of it like: "When someone leaves, show a notification"
+        socket.on('user_left', function(data) {
+            // Explanation:
+            // - socket.on('user_left', ...) = Listens for 'user_left' event
+            // - 'user_left' = Event name (server emits this when user leaves)
+            // - function(data) = Function that runs when event received
+            // - data = Data about the user who left
+            
+            addMessage(data);
+            // Explanation:
+            // - addMessage(data) = Shows notification in chat
+            // - Displays "{username} left the chat"
+        });
+        
+        // Step 7: Function to Send Message
+        // What is this? Sending a message to the server
+        // Think of it like: "When user clicks send, send message to server"
+        function sendMessage() {
+            // Explanation:
+            // - function sendMessage() = Function to send message
+            // - Gets message from input and sends it
+            
+            const message = messageInput.value.trim();
+            // Explanation:
+            // - messageInput.value = Gets text from input field
+            // - .trim() = Removes whitespace from beginning and end
+            // - message = The message text
+            
+            if (message) {
+                // Explanation:
+                // - if (message) = If message is not empty
+                // - Only send if there's actual text
+                
+                socket.emit('send_message', { message: message });
+                // Explanation:
+                // - socket.emit() = Sends event to server
+                // - 'send_message' = Event name (server listens for this)
+                // - { message: message } = Data to send (the message text)
+                // - Server receives this and broadcasts to all users
+                
+                messageInput.value = '';
+                // Explanation:
+                // - messageInput.value = '' = Clears the input field
+                // - After sending, input is empty and ready for next message
+            }
+        }
+        
+        // Step 8: Send Message on Button Click
+        // What is this? When user clicks the send button
+        // Think of it like: "When send button is clicked, send the message"
+        sendButton.addEventListener('click', sendMessage);
+        // Explanation:
+        // - sendButton.addEventListener('click', ...) = Listens for click
+        // - 'click' = Event type (button click)
+        // - sendMessage = Function to run when clicked
+        // - When user clicks send button, message is sent
+        
+        // Step 9: Send Message on Enter Key
+        // What is this? When user presses Enter key
+        // Think of it like: "When Enter is pressed, send the message"
+        messageInput.addEventListener('keypress', function(e) {
+            // Explanation:
+            // - messageInput.addEventListener('keypress', ...) = Listens for key press
+            // - 'keypress' = Event type (keyboard key pressed)
+            // - function(e) = Function that runs when key is pressed
+            // - e = Event object (contains key information)
+            
+            if (e.key === 'Enter') {
+                // Explanation:
+                // - if (e.key === 'Enter') = If Enter key was pressed
+                // - Only proceed if Enter was pressed
+                
+                sendMessage();
+                // Explanation:
+                // - sendMessage() = Calls our function to send message
+                // - User can press Enter instead of clicking button
+            }
+        });
+    </script>
+</body>
+</html>
+
