@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Job Processor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ Background Job Processor</h1>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Long Running Task Section -->
+        <div class="section">
+            <h2>Submit Long-Running Task</h2>
+            <p>This task will run in the background. You can continue using the app while it runs!</p>
+            
+            <form action="{{ url_for('submit_task') }}" method="POST" class="task-form">
+                <div class="form-group">
+                    <label for="duration">Task Duration (seconds):</label>
+                    <input type="number" id="duration" name="duration" min="1" max="60" value="10" class="form-input" required>
+                </div>
+                <button type="submit" class="btn btn-submit">Submit Task</button>
+            </form>
+        </div>
+        
+        <!-- Email Task Section -->
+        <div class="section">
+            <h2>Send Email (Background)</h2>
+            <p>Emails are sent in the background, so the app doesn't freeze!</p>
+            
+            <form action="{{ url_for('submit_email') }}" method="POST" class="task-form">
+                <div class="form-group">
+                    <label for="to_email">To Email:</label>
+                    <input type="email" id="to_email" name="to_email" placeholder="recipient@example.com" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" placeholder="Email Subject" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" placeholder="Email message..." class="form-textarea" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit">Send Email</button>
+            </form>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="section">
+            <h2>How It Works</h2>
+            <ol class="instructions">
+                <li><strong>Submit Task:</strong> Click "Submit Task" to start a background job</li>
+                <li><strong>Get Task ID:</strong> You'll receive a task ID immediately</li>
+                <li><strong>Check Status:</strong> View task progress on the status page</li>
+                <li><strong>Background Processing:</strong> Task runs in separate worker process</li>
+                <li><strong>No Blocking:</strong> App remains responsive while task runs!</li>
+            </ol>
+        </div>
+        
+        <!-- Benefits -->
+        <div class="section">
+            <h2>Benefits of Background Jobs</h2>
+            <ul class="benefits">
+                <li>⚡ Non-blocking: App stays responsive</li>
+                <li>🔄 Scalable: Multiple workers can process tasks</li>
+                <li>📊 Progress Tracking: Monitor task status</li>
+                <li>🛡️ Reliable: Tasks can be retried if they fail</li>
+            </ul>
+        </div>
+        
+        <!-- Setup Instructions -->
+        <div class="section">
+            <h2>Setup Instructions</h2>
+            <p>To run this app, you need:</p>
+            <ol class="instructions">
+                <li>Install Redis: <code>brew install redis</code> (Mac) or download from redis.io</li>
+                <li>Start Redis: <code>redis-server</code></li>
+                <li>Start Celery Worker: <code>celery -A app.celery worker --loglevel=info</code></li>
+                <li>Start Flask App: <code>python app.py</code></li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+

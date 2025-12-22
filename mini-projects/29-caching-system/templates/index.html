@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caching System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Caching System</h1>
+        
+        <!-- Cache Info -->
+        <div class="section">
+            <h2>Cache Configuration</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Cache Type:</strong> {{ cache_stats.type }}
+                </div>
+                <div class="info-item">
+                    <strong>Default Timeout:</strong> {{ cache_stats.timeout }} seconds
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Section -->
+        <div class="section">
+            <h2>Test Caching</h2>
+            <p>Compare performance with and without caching:</p>
+            
+            <div class="test-buttons">
+                <button onclick="testNoCache()" class="btn btn-slow">Test Without Cache (Slow)</button>
+                <button onclick="testWithCache()" class="btn btn-fast">Test With Cache (Fast)</button>
+                <button onclick="clearCache()" class="btn btn-clear">Clear Cache</button>
+            </div>
+            
+            <div id="results" class="results"></div>
+        </div>
+        
+        <!-- Instructions -->
+        <div class="section">
+            <h2>How It Works</h2>
+            <ol class="instructions">
+                <li><strong>Without Cache:</strong> Always runs the expensive operation (takes ~2 seconds)</li>
+                <li><strong>With Cache:</strong> First call takes ~2 seconds, subsequent calls are instant!</li>
+                <li><strong>Cache Timeout:</strong> Cache expires after 60 seconds</li>
+                <li><strong>Clear Cache:</strong> Removes all cached data to force fresh results</li>
+            </ol>
+        </div>
+        
+        <!-- Benefits -->
+        <div class="section">
+            <h2>Benefits of Caching</h2>
+            <ul class="benefits">
+                <li>⚡ Faster response times</li>
+                <li>💾 Reduced server load</li>
+                <li>💰 Lower costs (fewer database queries)</li>
+                <li>😊 Better user experience</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Test Without Cache
+        function testNoCache() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing without cache (this will take ~2 seconds)...</p>';
+            
+            const startTime = Date.now();
+            fetch('/api/data/test-key')
+                .then(response => response.json())
+                .then(data => {
+                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                    resultsDiv.innerHTML = `
+                        <div class="result-box slow">
+                            <h3>Result (No Cache)</h3>
+                            <p><strong>Data:</strong> ${data.data}</p>
+                            <p><strong>Value:</strong> ${data.value}</p>
+                            <p><strong>Time:</strong> ${elapsed} seconds</p>
+                            <p><strong>Cached:</strong> ${data.cached ? 'Yes' : 'No'}</p>
+                            <p><strong>Processed:</strong> ${data.processed_at}</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // Test With Cache
+        function testWithCache() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p>Testing with cache...</p>';
+            
+            const startTime = Date.now();
+            fetch('/api/data-cached/test-key')
+                .then(response => response.json())
+                .then(data => {
+                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(3);
+                    resultsDiv.innerHTML = `
+                        <div class="result-box ${data.cached ? 'fast' : 'slow'}">
+                            <h3>Result (With Cache)</h3>
+                            <p><strong>Data:</strong> ${data.data}</p>
+                            <p><strong>Value:</strong> ${data.value}</p>
+                            <p><strong>Time:</strong> ${elapsed} seconds</p>
+                            <p><strong>Cached:</strong> ${data.cached ? 'Yes (Fast!)' : 'No (First call)'}</p>
+                            <p><strong>Processed:</strong> ${data.processed_at}</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        // Clear Cache
+        function clearCache() {
+            fetch('/api/clear-cache', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Cache cleared! Next request will be slow (first call).');
+                    document.getElementById('results').innerHTML = '';
+                });
+        }
+    </script>
+</body>
+</html>
+

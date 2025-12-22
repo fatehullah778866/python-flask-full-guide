@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Task Status</h1>
+        
+        <div class="section">
+            <h2>Task ID: {{ task_id }}</h2>
+            
+            <div class="status-box">
+                <div class="status-item">
+                    <strong>State:</strong> 
+                    <span class="state-badge state-{{ task.state.lower() }}">{{ task.state }}</span>
+                </div>
+                <div class="status-item">
+                    <strong>Status:</strong> {{ task.status }}
+                </div>
+                
+                {% if task.state == 'PROGRESS' %}
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ (task.current / task.total * 100) }}%"></div>
+                    </div>
+                    <p>Progress: {{ task.current }} / {{ task.total }}</p>
+                {% endif %}
+                
+                {% if task.state == 'SUCCESS' %}
+                    <div class="result-box">
+                        <h3>Result:</h3>
+                        <pre>{{ task.result | tojson(indent=2) }}</pre>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="actions">
+                <button onclick="checkStatus()" class="btn btn-refresh">Refresh Status</button>
+                <a href="{{ url_for('index') }}" class="btn btn-back">Back to Home</a>
+            </div>
+        </div>
+        
+        <!-- Auto-refresh if task is not complete -->
+        {% if task.state not in ['SUCCESS', 'FAILURE'] %}
+            <script>
+                setTimeout(function() {
+                    location.reload();
+                }, 2000); // Refresh every 2 seconds
+            </script>
+        {% endif %}
+        
+        <script>
+            function checkStatus() {
+                location.reload();
+            }
+        </script>
+    </div>
+</body>
+</html>
+
