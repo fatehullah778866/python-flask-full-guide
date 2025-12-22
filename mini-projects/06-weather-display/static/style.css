@@ -1,0 +1,492 @@
+/* Weather Display App - Stylesheet */
+/* This file makes our weather app look beautiful! */
+
+/* Reset and Base Styles */
+/* What is this? Removes default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Explanation:
+   - * = Selects all elements
+   - margin: 0 = No space outside elements
+   - padding: 0 = No space inside elements
+   - box-sizing: border-box = Includes padding/border in width/height
+*/
+
+/* Body Styles */
+/* What is this? Styles for the entire page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* What is this? Font family (what text looks like) */
+    /* Segoe UI = Modern, clean font */
+    
+    line-height: 1.6;
+    /* What is this? Space between lines of text */
+    /* 1.6 = 1.6 times the font size (makes text easier to read) */
+    
+    color: #333;
+    /* What is this? Text color */
+    /* #333 = Dark gray (almost black) */
+    
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    /* What is this? Background gradient */
+    /* linear-gradient = Smooth color transition */
+    /* Creates a beautiful blue gradient background (like sky!) */
+    
+    min-height: 100vh;
+    /* What is this? Minimum height */
+    /* 100vh = 100% of viewport height (full screen) */
+    
+    padding: 2rem 0;
+    /* What is this? Space above and below body */
+}
+
+/* Container Styles */
+/* What is this? Styles for the main container */
+.container {
+    max-width: 600px;
+    /* What is this? Maximum width */
+    /* 600px = 600 pixels wide */
+    /* Prevents content from being too wide */
+    
+    margin: 0 auto;
+    /* What is this? Centers the container */
+    /* margin: 0 auto = No top/bottom margin, equal left/right (centers) */
+    
+    padding: 2rem;
+    /* What is this? Space inside container */
+    /* 2rem = 2 times root font size (about 32px) */
+}
+
+/* Heading Styles */
+/* What is this? Styles for headings */
+h1 {
+    color: white;
+    /* What is this? White text */
+    
+    text-align: center;
+    /* What is this? Text alignment */
+    /* center = Centers the text */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below heading */
+    
+    font-size: 2.5rem;
+    /* What is this? Font size */
+    /* 2.5rem = 2.5 times root font size (large) */
+    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* What is this? Text shadow effect */
+    /* Creates depth, makes text stand out */
+}
+
+h2 {
+    color: #333;
+    /* What is this? Dark gray text */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+}
+
+/* Flash Message Styles */
+/* What is this? Styles for flash messages (errors, success) */
+.flash-message {
+    padding: 1rem;
+    /* What is this? Space inside message */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    margin-bottom: 1.5rem;
+    /* What is this? Space below message */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    /* What is this? Light red background */
+    
+    color: #721c24;
+    /* What is this? Dark red text */
+    
+    border-left: 4px solid #dc3545;
+    /* What is this? Red left border */
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    /* What is this? Light green background */
+    
+    color: #155724;
+    /* What is this? Dark green text */
+    
+    border-left: 4px solid #28a745;
+    /* What is this? Green left border */
+}
+
+/* Weather Form Styles */
+/* What is this? Styles for the weather form */
+.weather-form {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside form */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    /* 10px = How round the corners are */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* What is this? Shadow effect */
+    /* Creates depth, makes form look elevated */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below form */
+}
+
+.input-group {
+    display: flex;
+    /* What is this? Flexbox layout */
+    /* flex = Flexible box layout */
+    
+    gap: 1rem;
+    /* What is this? Space between input and button */
+}
+
+.city-input {
+    flex: 1;
+    /* What is this? Takes up remaining space */
+    /* flex: 1 = Grows to fill available space */
+    
+    padding: 0.75rem;
+    /* What is this? Space inside input */
+    
+    border: 2px solid #ddd;
+    /* What is this? Border around input */
+    /* 2px = Border thickness */
+    /* solid = Solid line (not dashed) */
+    /* #ddd = Light gray color */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    transition: border-color 0.3s;
+    /* What is this? Smooth color change */
+    /* When border color changes, it animates over 0.3 seconds */
+}
+
+.city-input:focus {
+    outline: none;
+    /* What is this? Removes default browser outline */
+    
+    border-color: #74b9ff;
+    /* What is this? Blue border when focused */
+    /* :focus = When user clicks in the input */
+}
+
+/* Button Styles */
+/* What is this? Styles for buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    /* What is this? Space inside button */
+    /* 0.75rem top/bottom, 1.5rem left/right */
+    
+    border: none;
+    /* What is this? No border */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    cursor: pointer;
+    /* What is this? Pointer cursor on hover */
+    /* Shows hand icon when hovering */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    transition: all 0.3s ease;
+    /* What is this? Smooth animation for all properties */
+    /* all = All CSS properties */
+    /* 0.3s = Animation duration */
+    /* ease = Smooth animation curve */
+}
+
+.btn-search {
+    background-color: #74b9ff;
+    /* What is this? Blue background */
+    
+    color: white;
+    /* What is this? White text */
+}
+
+.btn-search:hover {
+    background-color: #0984e3;
+    /* What is this? Darker blue on hover */
+    /* :hover = When mouse is over button */
+}
+
+.btn-search:active {
+    transform: scale(0.98);
+    /* What is this? Slightly smaller when clicked */
+    /* :active = When button is being clicked */
+    /* scale(0.98) = Makes button 98% of original size */
+}
+
+/* Weather Card Styles */
+/* What is this? Styles for the weather display card */
+.weather-card {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside card */
+    
+    border-radius: 15px;
+    /* What is this? Rounded corners */
+    /* 15px = More rounded than usual */
+    
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* What is this? Shadow effect */
+    /* Creates depth, makes card look elevated */
+    
+    text-align: center;
+    /* What is this? Centers content */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below card */
+}
+
+.weather-icon {
+    margin-bottom: 1rem;
+    /* What is this? Space below icon */
+}
+
+.icon-img {
+    width: 120px;
+    /* What is this? Icon width */
+    /* 120px = 120 pixels wide */
+    
+    height: 120px;
+    /* What is this? Icon height */
+    /* 120px = 120 pixels tall */
+}
+
+.location {
+    font-size: 1.8rem;
+    /* What is this? Font size */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+}
+
+.temperature {
+    margin: 1.5rem 0;
+    /* What is this? Space above and below */
+}
+
+.temp-value {
+    font-size: 4rem;
+    /* What is this? Very large font */
+    /* 4rem = 4 times root font size */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    color: #74b9ff;
+    /* What is this? Blue color */
+}
+
+.description {
+    font-size: 1.5rem;
+    /* What is this? Font size */
+    
+    color: #666;
+    /* What is this? Medium gray text */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below */
+    
+    text-transform: capitalize;
+    /* What is this? Capitalizes first letter of each word */
+}
+
+/* Weather Details Styles */
+/* What is this? Styles for weather details section */
+.weather-details {
+    display: grid;
+    /* What is this? Grid layout */
+    /* grid = CSS Grid layout system */
+    
+    grid-template-columns: repeat(2, 1fr);
+    /* What is this? Two equal columns */
+    /* repeat(2, 1fr) = Two columns, each taking equal space */
+    
+    gap: 1rem;
+    /* What is this? Space between grid items */
+    
+    margin-top: 2rem;
+    /* What is this? Space above */
+    
+    padding-top: 2rem;
+    /* What is this? Space inside (top) */
+    
+    border-top: 2px solid #eee;
+    /* What is this? Top border */
+    /* 2px = Border thickness */
+    /* solid = Solid line */
+    /* #eee = Light gray color */
+}
+
+.detail-item {
+    display: flex;
+    /* What is this? Flexbox layout */
+    
+    flex-direction: column;
+    /* What is this? Stacks items vertically */
+    
+    align-items: center;
+    /* What is this? Centers items horizontally */
+    
+    padding: 1rem;
+    /* What is this? Space inside */
+    
+    background: #f8f9fa;
+    /* What is this? Light gray background */
+    
+    border-radius: 8px;
+    /* What is this? Rounded corners */
+}
+
+.detail-label {
+    font-size: 0.9rem;
+    /* What is this? Smaller font */
+    
+    color: #666;
+    /* What is this? Medium gray text */
+    
+    margin-bottom: 0.5rem;
+    /* What is this? Space below */
+    
+    text-transform: uppercase;
+    /* What is this? Makes text uppercase */
+    
+    letter-spacing: 1px;
+    /* What is this? Space between letters */
+}
+
+.detail-value {
+    font-size: 1.5rem;
+    /* What is this? Font size */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+}
+
+/* Instructions Styles */
+/* What is this? Styles for instructions section */
+.instructions {
+    background: rgba(255, 255, 255, 0.9);
+    /* What is this? Semi-transparent white */
+    /* rgba = Red, Green, Blue, Alpha (transparency) */
+    /* 0.9 = 90% opaque (10% transparent) */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    
+    margin-top: 2rem;
+    /* What is this? Space above */
+}
+
+.instructions ol {
+    margin-left: 2rem;
+    /* What is this? Indents list */
+    
+    margin-top: 1rem;
+    /* What is this? Space above list */
+}
+
+.instructions li {
+    margin-bottom: 0.5rem;
+    /* What is this? Space between list items */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+}
+
+.note {
+    margin-top: 1.5rem;
+    /* What is this? Space above */
+    
+    padding: 1rem;
+    /* What is this? Space inside */
+    
+    background: #fff3cd;
+    /* What is this? Light yellow background */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    border-left: 4px solid #ffc107;
+    /* What is this? Yellow left border */
+    
+    color: #856404;
+    /* What is this? Dark yellow text */
+}
+
+/* Responsive Design */
+/* What is this? Makes page work on mobile devices */
+@media (max-width: 768px) {
+    /* What is this? Media query for screens smaller than 768px */
+    /* @media = Applies styles only when condition is true */
+    
+    .container {
+        padding: 1rem;
+        /* What is this? Less padding on mobile */
+    }
+    
+    h1 {
+        font-size: 2rem;
+        /* What is this? Smaller heading on mobile */
+    }
+    
+    .input-group {
+        flex-direction: column;
+        /* What is this? Stacks input and button vertically */
+    }
+    
+    .btn {
+        width: 100%;
+        /* What is this? Full width button on mobile */
+    }
+    
+    .weather-details {
+        grid-template-columns: 1fr;
+        /* What is this? Single column on mobile */
+    }
+    
+    .temp-value {
+        font-size: 3rem;
+        /* What is this? Smaller temperature on mobile */
+    }
+}
+

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
+    <title>Weather Display App</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
+    <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
+        <h1>🌤️ Weather Display App</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
+        
+        <!-- Flash Messages -->
+        <!-- What is this? Container for flash messages (errors, success) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- What is this? Jinja2 syntax to get flash messages -->
+        <!-- get_flashed_messages() = Gets all flash messages -->
+        <!-- with_categories=true = Also gets message categories (error, success, etc.) -->
+        <!-- messages = Variable containing all flash messages -->
+        
+            {% if messages %}
+            <!-- What is this? Conditional - only show if messages exist -->
+            <!-- {% if messages %} = If there are any messages -->
+            
+                {% for category, message in messages %}
+                <!-- What is this? Loop through each message -->
+                <!-- {% for category, message in messages %} = Loop through messages -->
+                <!-- category = Message category (error, success, etc.) -->
+                <!-- message = The actual message text -->
+                
+                    <div class="flash-message {{ category }}">
+                        <!-- What is this? Container for each message -->
+                        <!-- div = Box for message -->
+                        <!-- class="flash-message {{ category }}" = CSS classes -->
+                        <!-- {{ category }} = Adds category as class (for styling) -->
+                        <!-- Example: class="flash-message error" -->
+                        
+                        {{ message }}
+                        <!-- What is this? Displays the message text -->
+                        <!-- {{ message }} = Jinja2 syntax to display message -->
+                        <!-- Flask replaces this with actual message -->
+                        
+                    </div>
+                    <!-- What is this? Closes the message div -->
+                    
+                {% endfor %}
+                <!-- What is this? Closes the for loop -->
+                <!-- {% endfor %} = End of for loop block -->
+                
+            {% endif %}
+            <!-- What is this? Closes the if statement -->
+            <!-- {% endif %} = End of if block -->
+            
+        {% endwith %}
+        <!-- What is this? Closes the with statement -->
+        <!-- {% endwith %} = End of with block -->
+        
+        <!-- Weather Form -->
+        <!-- What is this? Form to enter city name -->
+        <form action="{{ url_for('get_weather') }}" method="POST" class="weather-form">
+            <!-- What is this? HTML form element -->
+            <!-- action = Where to send form data (the route) -->
+            <!-- url_for('get_weather') = Flask function to generate URL for 'get_weather' route -->
+            <!-- method="POST" = Send data securely (not in URL) -->
+            <!-- class="weather-form" = CSS class for styling -->
+            
+            <div class="input-group">
+                <!-- What is this? Group for input and button -->
+                <!-- div = Container for form elements -->
+                <!-- class="input-group" = CSS class for styling -->
+                
+                <input type="text" 
+                       name="city" 
+                       placeholder="Enter city name (e.g., London, New York)" 
+                       class="city-input"
+                       value="{{ city if city else '' }}"
+                       required>
+                <!-- What is this? Text input field for city name -->
+                <!-- type="text" = Text input (not number, email, etc.) -->
+                <!-- name="city" = Name of the data when form is submitted -->
+                <!-- This is what we'll get in Python: request.form.get('city') -->
+                <!-- placeholder="..." = Hint text inside the input -->
+                <!-- class="city-input" = CSS class for styling -->
+                <!-- value="{{ city if city else '' }}" = Keeps city name after submission -->
+                <!-- {{ city if city else '' }} = Jinja2: show city if it exists, else empty -->
+                <!-- required = User must fill this in before submitting -->
+                
+                <button type="submit" class="btn btn-search">🔍 Get Weather</button>
+                <!-- What is this? Submit button -->
+                <!-- type="submit" = Button that submits the form -->
+                <!-- class="btn btn-search" = CSS classes for styling -->
+                <!-- When clicked, form is submitted to /weather route -->
+                
+            </div>
+            <!-- What is this? Closes the input-group div -->
+            
+        </form>
+        <!-- What is this? Closes the form element -->
+        
+        <!-- Weather Display -->
+        <!-- What is this? Container for displaying weather information -->
+        {% if weather %}
+        <!-- What is this? Jinja2 conditional -->
+        <!-- {% if weather %} = If weather data exists -->
+        <!-- Only show weather card if we have weather data -->
+        
+            <div class="weather-card">
+                <!-- What is this? Card/box to display weather -->
+                <!-- div = Box for weather information -->
+                <!-- class="weather-card" = CSS class for styling -->
+                
+                <!-- Weather Icon -->
+                <!-- What is this? Weather icon display -->
+                <div class="weather-icon">
+                    <!-- What is this? Container for weather icon -->
+                    <!-- div = Box for icon -->
+                    
+                    <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" 
+                         alt="{{ weather.description }}"
+                         class="icon-img">
+                    <!-- What is this? Weather icon image -->
+                    <!-- img = Image element -->
+                    <!-- src = Image source URL -->
+                    <!-- http://openweathermap.org/img/wn/ = OpenWeatherMap icon URL -->
+                    <!-- {{ weather.icon }} = Icon code from API (e.g., "01d") -->
+                    <!-- @2x.png = High resolution version -->
+                    <!-- alt = Alternative text (for accessibility) -->
+                    <!-- {{ weather.description }} = Weather description -->
+                    <!-- class="icon-img" = CSS class for styling -->
+                    
+                </div>
+                <!-- What is this? Closes the weather-icon div -->
+                
+                <!-- City and Country -->
+                <!-- What is this? City and country display -->
+                <h2 class="location">
+                    <!-- What is this? Heading for location -->
+                    <!-- h2 = Second level heading -->
+                    <!-- class="location" = CSS class for styling -->
+                    
+                    {{ weather.city }}, {{ weather.country }}
+                    <!-- What is this? Displays city and country -->
+                    <!-- {{ weather.city }} = City name from API -->
+                    <!-- {{ weather.country }} = Country code from API -->
+                    <!-- Example: "New York, US" -->
+                    
+                </h2>
+                <!-- What is this? Closes the h2 heading -->
+                
+                <!-- Temperature -->
+                <!-- What is this? Temperature display -->
+                <div class="temperature">
+                    <!-- What is this? Container for temperature -->
+                    <!-- div = Box for temperature -->
+                    <!-- class="temperature" = CSS class for styling -->
+                    
+                    <span class="temp-value">{{ weather.temperature }}°C</span>
+                    <!-- What is this? Temperature value -->
+                    <!-- span = Inline container -->
+                    <!-- class="temp-value" = CSS class for styling -->
+                    <!-- {{ weather.temperature }} = Temperature from API -->
+                    <!-- °C = Celsius symbol -->
+                    <!-- Example: "23°C" -->
+                    
+                </div>
+                <!-- What is this? Closes the temperature div -->
+                
+                <!-- Weather Description -->
+                <!-- What is this? Weather description display -->
+                <p class="description">{{ weather.description }}</p>
+                <!-- What is this? Paragraph for description -->
+                <!-- p = Paragraph tag -->
+                <!-- class="description" = CSS class for styling -->
+                <!-- {{ weather.description }} = Weather description from API -->
+                <!-- Example: "Clear Sky" -->
+                
+                <!-- Weather Details -->
+                <!-- What is this? Container for additional weather details -->
+                <div class="weather-details">
+                    <!-- What is this? Box for weather details -->
+                    <!-- div = Container for details -->
+                    <!-- class="weather-details" = CSS class for styling -->
+                    
+                    <!-- Feels Like -->
+                    <!-- What is this? "Feels like" temperature -->
+                    <div class="detail-item">
+                        <!-- What is this? Individual detail item -->
+                        <!-- div = Box for one detail -->
+                        <!-- class="detail-item" = CSS class for styling -->
+                        
+                        <span class="detail-label">Feels Like:</span>
+                        <!-- What is this? Label for the detail -->
+                        <!-- span = Inline container -->
+                        <!-- class="detail-label" = CSS class for label -->
+                        
+                        <span class="detail-value">{{ weather.feels_like }}°C</span>
+                        <!-- What is this? Value for the detail -->
+                        <!-- {{ weather.feels_like }} = "Feels like" temperature -->
+                        <!-- Example: "20°C" -->
+                        
+                    </div>
+                    <!-- What is this? Closes the detail-item div -->
+                    
+                    <!-- Humidity -->
+                    <!-- What is this? Humidity display -->
+                    <div class="detail-item">
+                        <!-- What is this? Individual detail item -->
+                        
+                        <span class="detail-label">Humidity:</span>
+                        <!-- What is this? Label for humidity -->
+                        
+                        <span class="detail-value">{{ weather.humidity }}%</span>
+                        <!-- What is this? Humidity value -->
+                        <!-- {{ weather.humidity }} = Humidity percentage -->
+                        <!-- % = Percent symbol -->
+                        <!-- Example: "65%" -->
+                        
+                    </div>
+                    <!-- What is this? Closes the detail-item div -->
+                    
+                    <!-- Wind Speed -->
+                    <!-- What is this? Wind speed display -->
+                    <div class="detail-item">
+                        <!-- What is this? Individual detail item -->
+                        
+                        <span class="detail-label">Wind Speed:</span>
+                        <!-- What is this? Label for wind speed -->
+                        
+                        <span class="detail-value">{{ weather.wind_speed }} km/h</span>
+                        <!-- What is this? Wind speed value -->
+                        <!-- {{ weather.wind_speed }} = Wind speed in km/h -->
+                        <!-- km/h = Kilometers per hour -->
+                        <!-- Example: "20 km/h" -->
+                        
+                    </div>
+                    <!-- What is this? Closes the detail-item div -->
+                    
+                    <!-- Pressure -->
+                    <!-- What is this? Atmospheric pressure display -->
+                    <div class="detail-item">
+                        <!-- What is this? Individual detail item -->
+                        
+                        <span class="detail-label">Pressure:</span>
+                        <!-- What is this? Label for pressure -->
+                        
+                        <span class="detail-value">{{ weather.pressure }} hPa</span>
+                        <!-- What is this? Pressure value -->
+                        <!-- {{ weather.pressure }} = Atmospheric pressure -->
+                        <!-- hPa = Hectopascals (pressure unit) -->
+                        <!-- Example: "1013 hPa" -->
+                        
+                    </div>
+                    <!-- What is this? Closes the detail-item div -->
+                    
+                </div>
+                <!-- What is this? Closes the weather-details div -->
+                
+            </div>
+            <!-- What is this? Closes the weather-card div -->
+            
+        {% else %}
+        <!-- What is this? Else condition -->
+        <!-- {% else %} = If weather data doesn't exist -->
+        
+            <!-- Instructions -->
+            <!-- What is this? Instructions when no weather is shown -->
+            <div class="instructions">
+                <!-- What is this? Container for instructions -->
+                <!-- div = Box for instructions -->
+                <!-- class="instructions" = CSS class for styling -->
+                
+                <h2>How to Use:</h2>
+                <!-- What is this? Instructions heading -->
+                <!-- h2 = Second level heading -->
+                
+                <ol>
+                    <!-- What is this? Ordered list (numbered) -->
+                    <!-- ol = Ordered list -->
+                    
+                    <li>Enter a city name in the input field above</li>
+                    <!-- What is this? First instruction -->
+                    <!-- li = List item -->
+                    
+                    <li>Click "🔍 Get Weather" button</li>
+                    <!-- What is this? Second instruction -->
+                    
+                    <li>View the weather information for that city</li>
+                    <!-- What is this? Third instruction -->
+                    
+                </ol>
+                <!-- What is this? Closes the ordered list -->
+                
+                <p class="note">
+                    <!-- What is this? Note paragraph -->
+                    <!-- p = Paragraph tag -->
+                    <!-- class="note" = CSS class for styling -->
+                    
+                    💡 <strong>Note:</strong> Make sure you have set up your OpenWeatherMap API key!
+                    <!-- What is this? Note about API key -->
+                    <!-- strong = Bold text -->
+                    <!-- Tells user they need API key -->
+                    
+                </p>
+                <!-- What is this? Closes the note paragraph -->
+                
+            </div>
+            <!-- What is this? Closes the instructions div -->
+            
+        {% endif %}
+        <!-- What is this? Closes the if statement -->
+        <!-- {% endif %} = End of if block -->
+        
+    </div>
+    <!-- What is this? Closes the container div -->
+</body>
+</html>
+
