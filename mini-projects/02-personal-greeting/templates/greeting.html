@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
+    <title>Hello, {{ name }}!</title>
+    <!-- What is this? Dynamic title using Jinja2 template syntax -->
+    <!-- {{ name }} = Jinja2 syntax to display the name variable -->
+    <!-- If name = "John", title = "Hello, John!" -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to CSS stylesheet -->
+    <!-- url_for = Flask function to find static files -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content -->
+    
+    <div class="container">
+        <!-- What is this? Container div for content -->
+        <!-- div = Box that groups content -->
+        
+        <div class="greeting-card">
+            <!-- What is this? A card/box for the greeting -->
+            <!-- class="greeting-card" = CSS class for styling -->
+            
+            <h1>Hello, {{ name }}! 👋</h1>
+            <!-- What is this? Heading with dynamic name -->
+            <!-- {{ name }} = Jinja2 template syntax -->
+            <!-- Jinja2 = Template engine that lets us use variables -->
+            <!-- If name = "John", displays: "Hello, John! 👋" -->
+            <!-- The name comes from app.py: render_template('greeting.html', name=name) -->
+            
+            <p class="message">Welcome to the Personal Greeting App!</p>
+            <!-- What is this? Welcome message paragraph -->
+            <!-- p = Paragraph tag -->
+            
+            <p class="info">Your name is: <strong>{{ name }}</strong></p>
+            <!-- What is this? Shows the name again -->
+            <!-- strong = Makes text bold -->
+            <!-- {{ name }} = Displays the name variable -->
+            
+            <div class="actions">
+                <!-- What is this? Container for action buttons -->
+                <!-- div = Groups buttons together -->
+                
+                <a href="{{ url_for('index') }}" class="btn">Go Back</a>
+                <!-- What is this? Link back to home page -->
+                <!-- a = Anchor tag (creates a link) -->
+                <!-- href = Where the link goes -->
+                <!-- url_for('index') = Flask function to generate URL for 'index' route -->
+                <!-- This creates a link to the home page -->
+                <!-- class="btn" = CSS class for button styling -->
+                
+                <a href="/hello/{{ name }}" class="btn secondary">Greet Again</a>
+                <!-- What is this? Link to greet again with same name -->
+                <!-- /hello/{{ name }} = Dynamic URL with name -->
+                <!-- If name = "John", creates: /hello/John -->
+                <!-- This will call the greet() function again -->
+                
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <!-- What is this? Explanation section -->
+            <!-- div = Container for explanation -->
+            
+            <h2>How This Works:</h2>
+            <!-- What is this? Subheading -->
+            <!-- h2 = Second level heading (smaller than h1) -->
+            
+            <ol>
+                <!-- What is this? Ordered list (numbered) -->
+                <!-- ol = Ordered list -->
+                
+                <li>You entered your name: <code>{{ name }}</code></li>
+                <!-- What is this? List item showing the name -->
+                <!-- code = Makes text look like code -->
+                
+                <li>The name was passed to this template</li>
+                <!-- What is this? Explanation step -->
+                
+                <li>Jinja2 template engine replaced <code>{{ name }}</code> with your actual name</li>
+                <!-- What is this? Explains template rendering -->
+                <!-- Jinja2 = Template engine Flask uses -->
+                
+                <li>You see a personalized greeting!</li>
+                <!-- What is this? Final step -->
+                
+            </ol>
+            
+            <p class="tip">💡 This is called <strong>dynamic content</strong> - the page changes based on the data!</p>
+            <!-- What is this? Tip about dynamic content -->
+            <!-- strong = Bold text -->
+            
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Tells the browser what character encoding to use -->
+    <!-- UTF-8 = Can display most characters (English, emojis, etc.) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes the page work on mobile devices -->
+    <!-- viewport = The visible area of the webpage -->
+    
+    <title>Personal Greeting App</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    <!-- You'll see this at the top of your browser -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
+    <!-- This makes our page look nice with colors and styling -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
+    <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
+        <h1>Welcome to the Personal Greeting App!</h1>
+        <!-- What is this? A heading (large text) -->
+        <!-- h1 = Biggest heading, used for main titles -->
+        
+        <p class="intro">Enter your name below to get a personalized greeting!</p>
+        <!-- What is this? A paragraph of text -->
+        <!-- p = Paragraph tag for text -->
+        <!-- class="intro" = CSS class for styling -->
+        
+        <!-- Form Section -->
+        <!-- What is this? A form where users can enter their name -->
+        <form action="/hello" method="GET">
+            <!-- What is this? HTML form element -->
+            <!-- action="/hello" = Where to send the form data -->
+            <!-- method="GET" = Send data in the URL (like /hello?name=John) -->
+            <!-- GET = Data appears in URL, POST = Data hidden -->
+            
+            <div class="form-group">
+                <!-- What is this? A group for form elements -->
+                <!-- Groups the label and input together -->
+                
+                <label for="name">Your Name:</label>
+                <!-- What is this? Label for the input field -->
+                <!-- for="name" = Connects to input with id="name" -->
+                <!-- This is what users see: "Your Name:" -->
+                
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <!-- What is this? Text input field -->
+                <!-- type="text" = Text input (not password, email, etc.) -->
+                <!-- id="name" = Unique identifier for this input -->
+                <!-- name="name" = Name of the data when form is submitted -->
+                <!-- placeholder="..." = Hint text inside the input -->
+                <!-- required = User must fill this in before submitting -->
+                
+            </div>
+            
+            <button type="submit" class="btn">Get Greeting!</button>
+            <!-- What is this? Submit button -->
+            <!-- type="submit" = Button that submits the form -->
+            <!-- class="btn" = CSS class for styling (makes it look like a button) -->
+            <!-- When clicked, form is submitted to /hello -->
+            
+        </form>
+        
+        <div class="info">
+            <!-- What is this? Information section -->
+            <!-- div = Container for information text -->
+            
+            <p><strong>How it works:</strong></p>
+            <!-- What is this? Paragraph with bold text -->
+            <!-- strong = Makes text bold -->
+            
+            <ul>
+                <!-- What is this? Unordered list (bullet points) -->
+                <!-- ul = Unordered list -->
+                
+                <li>Enter your name in the form above</li>
+                <!-- What is this? List item -->
+                <!-- li = Individual item in a list -->
+                
+                <li>Click "Get Greeting!" button</li>
+                <li>You'll be greeted personally!</li>
+                
+            </ul>
+            
+            <p class="tip">💡 Tip: You can also visit <code>/hello/YourName</code> directly!</p>
+            <!-- What is this? Paragraph with a tip -->
+            <!-- code = Makes text look like code (monospace font) -->
+            
+        </div>
+    </div>
+</body>
+</html>
+
