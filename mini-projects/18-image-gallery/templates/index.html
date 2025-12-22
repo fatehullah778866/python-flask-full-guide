@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Image Gallery</h1>
+        
+        {% if images %}
+            <div class="gallery-info">
+                <p>Displaying <strong>{{ images|length }}</strong> image(s)</p>
+            </div>
+            
+            <div class="gallery-grid">
+                {% for image in images %}
+                    <div class="gallery-item">
+                        <a href="{{ url_for('serve_image', filename=image) }}" target="_blank">
+                            <img src="{{ url_for('serve_image', filename=image) }}" 
+                                 alt="{{ image }}" 
+                                 class="gallery-image">
+                        </a>
+                        <p class="image-name">{{ image }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>No Images Found</h2>
+                <p>Add some images to the <code>static/images/</code> folder to see them here!</p>
+                <p class="note">Supported formats: PNG, JPG, JPEG, GIF, WEBP</p>
+            </div>
+        {% endif %}
+        
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Add images to the <code>static/images/</code> folder</li>
+                <li>Supported formats: PNG, JPG, JPEG, GIF, WEBP</li>
+                <li>Refresh the page to see your images</li>
+                <li>Click on any image to view it in full size</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+
