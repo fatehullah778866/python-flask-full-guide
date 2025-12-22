@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Analytics Dashboard</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Date Filter -->
+        <div class="section">
+            <h2>Date Range</h2>
+            <div class="date-filter">
+                <a href="{{ url_for('index', days=7) }}" class="btn {% if days == 7 %}btn-active{% else %}btn-filter{% endif %}">Last 7 Days</a>
+                <a href="{{ url_for('index', days=30) }}" class="btn {% if days == 30 %}btn-active{% else %}btn-filter{% endif %}">Last 30 Days</a>
+                <a href="{{ url_for('index', days=90) }}" class="btn {% if days == 90 %}btn-active{% else %}btn-filter{% endif %}">Last 90 Days</a>
+            </div>
+        </div>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Events</h3>
+                <p class="stat-value">{{ total_events }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Event Types</h3>
+                <p class="stat-value">{{ events_by_type|length }}</p>
+            </div>
+        </div>
+        
+        <!-- Charts Section -->
+        <div class="section">
+            <h2>Events by Type</h2>
+            <canvas id="eventsByTypeChart"></canvas>
+        </div>
+        
+        <div class="section">
+            <h2>Events Over Time</h2>
+            <canvas id="eventsOverTimeChart"></canvas>
+        </div>
+        
+        <!-- Top Event Types -->
+        <div class="section">
+            <h2>Top Event Types</h2>
+            {% if top_event_types %}
+                <div class="top-events-list">
+                    {% for event_type, count in top_event_types %}
+                        <div class="event-item">
+                            <span class="event-type">{{ event_type }}</span>
+                            <span class="event-count">{{ count }} events</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No events yet. Start using the app to generate analytics!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- Test Buttons -->
+        <div class="section">
+            <h2>Test Event Tracking</h2>
+            <div class="test-buttons">
+                <button onclick="trackEvent('button_click', {'button': 'test1'})" class="btn btn-test">Click Me 1</button>
+                <button onclick="trackEvent('button_click', {'button': 'test2'})" class="btn btn-test">Click Me 2</button>
+                <button onclick="trackEvent('form_submit', {'form': 'test'})" class="btn btn-test">Submit Form</button>
+                <button onclick="trackEvent('download', {'file': 'test.pdf'})" class="btn btn-test">Download</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Chart Data
+        // What is this? Preparing data for charts
+        // Think of it like: "Get data ready for the charts"
+        
+        // Events by Type Chart Data
+        const eventsByTypeData = {
+            // Explanation:
+            // - const = Constant variable (can't be changed)
+            // - eventsByTypeData = Variable name
+            // - {} = Object to store chart data
+            
+            labels: {{ events_by_type.keys()|list|tojson }},
+            // Explanation:
+            // - events_by_type.keys() = Gets all event type names
+            // - .list = Converts to list
+            // - tojson = Converts to JSON (for JavaScript)
+            // - labels = Chart labels (event type names)
+            // - Example: ['page_view', 'button_click', 'form_submit']
+            
+            datasets: [{
+                // Explanation:
+                // - datasets = Array of data sets for chart
+                // - [{}] = Array with one object
+                
+                label: 'Number of Events',
+                // Explanation:
+                // - label = Label for this data set
+                // - 'Number of Events' = Description
+                
+                data: {{ events_by_type.values()|list|tojson }},
+                // Explanation:
+                // - events_by_type.values() = Gets all event counts
+                // - .list = Converts to list
+                // - tojson = Converts to JSON
+                // - data = Chart data values (counts)
+                // - Example: [10, 5, 3]
+                
+                backgroundColor: [
+                    'rgba(102, 126, 234, 0.6)',
+                    'rgba(118, 75, 162, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)'
+                ],
+                // Explanation:
+                // - backgroundColor = Colors for chart bars
+                // - Array of colors with transparency
+                // - rgba() = Red, Green, Blue, Alpha (transparency)
+                // - 0.6 = 60% opacity
+                
+                borderColor: [
+                    'rgba(102, 126, 234, 1)',
+                    'rgba(118, 75, 162, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                // Explanation:
+                // - borderColor = Border colors for chart bars
+                // - Array of colors (full opacity)
+                // - 1 = 100% opacity (solid)
+                
+                borderWidth: 2
+                // Explanation:
+                // - borderWidth = Width of borders
+                // - 2 = 2 pixels
+            }]
+        };
+        
+        // Events Over Time Chart Data
+        const eventsOverTimeData = {
+            // Explanation:
+            // - const = Constant variable
+            // - eventsOverTimeData = Variable name
+            // - {} = Object to store chart data
+            
+            labels: {{ events_by_day.keys()|list|sort|tojson }},
+            // Explanation:
+            // - events_by_day.keys() = Gets all dates
+            // - .list = Converts to list
+            // - .sort = Sorts dates
+            // - tojson = Converts to JSON
+            // - labels = Chart labels (dates)
+            // - Example: ['2024-01-01', '2024-01-02', ...]
+            
+            datasets: [{
+                // Explanation:
+                // - datasets = Array of data sets
+                // - [{}] = Array with one object
+                
+                label: 'Events per Day',
+                // Explanation:
+                // - label = Label for this data set
+                // - 'Events per Day' = Description
+                
+                data: {{ events_by_day.values()|list|tojson }},
+                // Explanation:
+                // - events_by_day.values() = Gets all daily counts
+                // - .list = Converts to list
+                // - tojson = Converts to JSON
+                // - data = Chart data values (daily counts)
+                // - Example: [5, 8, 12, ...]
+                
+                backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                // Explanation:
+                // - backgroundColor = Fill color for line chart
+                // - rgba(102, 126, 234, 0.2) = Blue with 20% opacity
+                
+                borderColor: 'rgba(102, 126, 234, 1)',
+                // Explanation:
+                // - borderColor = Line color
+                // - rgba(102, 126, 234, 1) = Blue (solid)
+                
+                borderWidth: 2,
+                // Explanation:
+                // - borderWidth = Line width
+                // - 2 = 2 pixels
+                
+                fill: true
+                // Explanation:
+                // - fill = Fill area under line
+                // - true = Fill the area
+            }]
+        };
+        
+        // Create Events by Type Chart
+        // What is this? Creating a bar chart
+        // Think of it like: "Make a chart showing events by type"
+        const ctx1 = document.getElementById('eventsByTypeChart').getContext('2d');
+        // Explanation:
+        // - document.getElementById('eventsByTypeChart') = Finds canvas element
+        // - .getContext('2d') = Gets 2D drawing context
+        // - ctx1 = Canvas context for drawing
+        
+        new Chart(ctx1, {
+            // Explanation:
+            // - new Chart() = Creates new Chart.js chart
+            // - ctx1 = Canvas context
+            // - {} = Chart configuration object
+            
+            type: 'bar',
+            // Explanation:
+            // - type = Chart type
+            // - 'bar' = Bar chart (vertical bars)
+            
+            data: eventsByTypeData,
+            // Explanation:
+            // - data = Chart data
+            // - eventsByTypeData = Our data object
+            
+            options: {
+                // Explanation:
+                // - options = Chart options
+                // - {} = Configuration object
+                
+                responsive: true,
+                // Explanation:
+                // - responsive = Chart adapts to screen size
+                // - true = Enable responsive mode
+                
+                scales: {
+                    // Explanation:
+                    // - scales = Axis configuration
+                    // - {} = Configuration object
+                    
+                    y: {
+                        // Explanation:
+                        // - y = Y-axis (vertical)
+                        // - {} = Configuration object
+                        
+                        beginAtZero: true
+                        // Explanation:
+                        // - beginAtZero = Start Y-axis at 0
+                        // - true = Start at zero
+                    }
+                }
+            }
+        });
+        
+        // Create Events Over Time Chart
+        // What is this? Creating a line chart
+        // Think of it like: "Make a chart showing events over time"
+        const ctx2 = document.getElementById('eventsOverTimeChart').getContext('2d');
+        // Explanation:
+        // - document.getElementById('eventsOverTimeChart') = Finds canvas element
+        // - .getContext('2d') = Gets 2D drawing context
+        // - ctx2 = Canvas context for drawing
+        
+        new Chart(ctx2, {
+            // Explanation:
+            // - new Chart() = Creates new Chart.js chart
+            // - ctx2 = Canvas context
+            // - {} = Chart configuration object
+            
+            type: 'line',
+            // Explanation:
+            // - type = Chart type
+            // - 'line' = Line chart
+            
+            data: eventsOverTimeData,
+            // Explanation:
+            // - data = Chart data
+            // - eventsOverTimeData = Our data object
+            
+            options: {
+                // Explanation:
+                // - options = Chart options
+                // - {} = Configuration object
+                
+                responsive: true,
+                // Explanation:
+                // - responsive = Chart adapts to screen size
+                // - true = Enable responsive mode
+                
+                scales: {
+                    // Explanation:
+                    // - scales = Axis configuration
+                    // - {} = Configuration object
+                    
+                    y: {
+                        // Explanation:
+                        // - y = Y-axis (vertical)
+                        // - {} = Configuration object
+                        
+                        beginAtZero: true
+                        // Explanation:
+                        // - beginAtZero = Start Y-axis at 0
+                        // - true = Start at zero
+                    }
+                }
+            }
+        });
+        
+        // Function to Track Events
+        // What is this? Function to track user actions
+        // Think of it like: "Record when user does something"
+        function trackEvent(eventType, eventData) {
+            // Explanation:
+            // - function trackEvent(eventType, eventData) = Function to track events
+            // - eventType = Type of event (string)
+            // - eventData = Additional data (object)
+            
+            fetch('/api/track-event', {
+                // Explanation:
+                // - fetch('/api/track-event', ...) = Makes HTTP request to API
+                // - '/api/track-event' = API endpoint URL
+                // - {} = Request options object
+                
+                method: 'POST',
+                // Explanation:
+                // - method = HTTP method
+                // - 'POST' = POST request (sends data)
+                
+                headers: {
+                    // Explanation:
+                    // - headers = HTTP headers
+                    // - {} = Headers object
+                    
+                    'Content-Type': 'application/json'
+                    // Explanation:
+                    // - 'Content-Type' = Type of data being sent
+                    // - 'application/json' = JSON format
+                },
+                
+                body: JSON.stringify({
+                    // Explanation:
+                    // - body = Request body (data being sent)
+                    // - JSON.stringify() = Converts object to JSON string
+                    // - {} = Data object
+                    
+                    event_type: eventType,
+                    // Explanation:
+                    // - event_type = Event type
+                    // - eventType = Parameter value
+                    
+                    event_data: JSON.stringify(eventData)
+                    // Explanation:
+                    // - event_data = Additional event data
+                    // - JSON.stringify(eventData) = Converts object to JSON string
+                })
+            })
+            .then(response => response.json())
+            // Explanation:
+            // - .then() = Handles the response
+            // - response.json() = Converts response to JSON
+            // - Returns Promise with JSON data
+            
+            .then(data => {
+                // Explanation:
+                // - .then(data => ...) = Handles the JSON data
+                // - data = JSON object from server
+                
+                if (data.success) {
+                    // Explanation:
+                    // - if (data.success) = If event was tracked successfully
+                    // - Only proceed if successful
+                    
+                    alert('Event tracked! Refresh page to see updated analytics.');
+                    // Explanation:
+                    // - alert() = Shows popup message
+                    // - 'Event tracked!...' = Success message
+                    // - Tells user to refresh to see updates
+                }
+            })
+            // Explanation:
+            // - End of .then() chain
+            // - Handles successful response
+            
+            .catch(error => {
+                // Explanation:
+                // - .catch() = Handles errors
+                // - error = Error object
+                // - Runs if fetch fails
+                
+                console.error('Error tracking event:', error);
+                // Explanation:
+                // - console.error() = Logs error to console
+                // - 'Error tracking event:' = Error message
+                // - error = The error object
+            });
+        }
+    </script>
+</body>
+</html>
+

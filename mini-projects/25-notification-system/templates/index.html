@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification System - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 Notification System</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('notifications') }}" class="btn btn-notifications">
+                    Notifications 
+                    {% if unread_count > 0 %}
+                        <span class="badge">{{ unread_count }}</span>
+                    {% endif %}
+                </a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Create Notification Form -->
+        <div class="section">
+            <h2>Create Test Notification</h2>
+            <form action="{{ url_for('create_test_notification') }}" method="POST" class="notification-form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" class="form-input" value="Test Notification" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" class="form-textarea" rows="3" required>This is a test notification</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="type">Type:</label>
+                    <select id="type" name="type" class="form-select">
+                        <option value="info">Info</option>
+                        <option value="success">Success</option>
+                        <option value="warning">Warning</option>
+                        <option value="error">Error</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Notification</button>
+            </form>
+        </div>
+        
+        <!-- Recent Notifications -->
+        <div class="section">
+            <h2>Recent Notifications</h2>
+            {% if recent_notifications %}
+                <div class="notifications-list">
+                    {% for notification in recent_notifications %}
+                        <div class="notification-card {{ notification.notification_type }} {% if not notification.is_read %}unread{% endif %}">
+                            <div class="notification-header">
+                                <h3>{{ notification.title }}</h3>
+                                <span class="notification-date">{{ notification.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                            </div>
+                            <p class="notification-message">{{ notification.message }}</p>
+                            <div class="notification-footer">
+                                <span class="notification-type">{{ notification.notification_type }}</span>
+                                {% if not notification.is_read %}
+                                    <span class="unread-badge">Unread</span>
+                                {% else %}
+                                    <span class="read-badge">Read</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No notifications yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        // Real-time notification count update
+        // What is this? JavaScript to update notification count in real-time
+        // Think of it like: "Check for new notifications every few seconds"
+        function updateNotificationCount() {
+            // Explanation:
+            // - function updateNotificationCount() = Function to update count
+            // - This function will fetch the notification count from the server
+            
+            fetch('/api/notifications/count')
+                // Explanation:
+                // - fetch('/api/notifications/count') = Makes HTTP request to API endpoint
+                // - Gets notification count from server
+                // - Returns a Promise (async operation)
+                
+                .then(response => response.json())
+                // Explanation:
+                // - .then() = Handles the response
+                // - response.json() = Converts response to JSON
+                // - Returns another Promise with JSON data
+                
+                .then(data => {
+                    // Explanation:
+                    // - .then(data => ...) = Handles the JSON data
+                    // - data = JSON object from server
+                    // - Contains: {count: 5} (example)
+                    
+                    const badge = document.querySelector('.badge');
+                    // Explanation:
+                    // - document.querySelector('.badge') = Finds badge element
+                    // - badge = The element showing notification count
+                    // - null if badge doesn't exist
+                    
+                    if (data.count > 0) {
+                        // Explanation:
+                        // - if (data.count > 0) = If there are unread notifications
+                        // - Only proceed if count is greater than 0
+                        
+                        if (badge) {
+                            // Explanation:
+                            // - if (badge) = If badge element exists
+                            // - Only proceed if badge exists
+                            
+                            badge.textContent = data.count;
+                            // Explanation:
+                            // - badge.textContent = data.count = Updates badge text
+                            // - Shows the unread count
+                            // - Example: Shows "5" if 5 unread notifications
+                        } else {
+                            // Explanation:
+                            // - else = If badge doesn't exist
+                            // - Need to create badge
+                            
+                            const notificationsLink = document.querySelector('.btn-notifications');
+                            // Explanation:
+                            // - document.querySelector('.btn-notifications') = Finds notifications link
+                            // - notificationsLink = The link element
+                            
+                            if (notificationsLink) {
+                                // Explanation:
+                                // - if (notificationsLink) = If link exists
+                                // - Only proceed if link exists
+                                
+                                const newBadge = document.createElement('span');
+                                // Explanation:
+                                // - document.createElement('span') = Creates new span element
+                                // - newBadge = The new badge element
+                                
+                                newBadge.className = 'badge';
+                                // Explanation:
+                                // - .className = Sets CSS class
+                                // - 'badge' = Class name for styling
+                                
+                                newBadge.textContent = data.count;
+                                // Explanation:
+                                // - .textContent = Sets text content
+                                // - data.count = Unread count
+                                // - Example: Shows "5"
+                                
+                                notificationsLink.appendChild(newBadge);
+                                // Explanation:
+                                // - .appendChild() = Adds element as child
+                                // - newBadge = The badge element
+                                // - notificationsLink = The parent element
+                                // - This adds the badge to the notifications link
+                            }
+                        }
+                    } else {
+                        // Explanation:
+                        // - else = If count is 0
+                        // - No unread notifications
+                        
+                        if (badge) {
+                            // Explanation:
+                            // - if (badge) = If badge exists
+                            // - Remove badge if no unread notifications
+                            
+                            badge.remove();
+                            // Explanation:
+                            // - .remove() = Removes element from DOM
+                            // - Removes the badge element
+                        }
+                    }
+                })
+                // Explanation:
+                // - End of .then() chain
+                // - Handles successful response
+                
+                .catch(error => {
+                    // Explanation:
+                    // - .catch() = Handles errors
+                    // - error = Error object
+                    // - Runs if fetch fails
+                    
+                    console.error('Error updating notification count:', error);
+                    // Explanation:
+                    // - console.error() = Logs error to console
+                    // - 'Error updating notification count:' = Error message
+                    // - error = The error object
+                    // - This helps with debugging
+                });
+        }
+        
+        // Update notification count every 5 seconds
+        // What is this? Setting up automatic updates
+        // Think of it like: "Check for new notifications every 5 seconds"
+        setInterval(updateNotificationCount, 5000);
+        // Explanation:
+        // - setInterval() = Runs function repeatedly
+        // - updateNotificationCount = Function to run
+        // - 5000 = Interval in milliseconds (5 seconds)
+        // - This checks for new notifications every 5 seconds
+        // - Creates real-time feel without WebSockets!
+        
+        // Update immediately on page load
+        updateNotificationCount();
+        // Explanation:
+        // - updateNotificationCount() = Calls function immediately
+        // - Updates count when page loads
+        // - Don't wait 5 seconds for first update
+    </script>
+</body>
+</html>
+

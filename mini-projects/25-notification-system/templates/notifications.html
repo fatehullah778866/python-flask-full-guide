@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔔 Notifications</h1>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Dashboard</a>
+                {% if unread_count > 0 %}
+                    <form action="{{ url_for('mark_all_as_read') }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-primary">Mark All as Read</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Notifications List -->
+        <div class="section">
+            <h2>All Notifications ({{ notifications|length }})</h2>
+            {% if notifications %}
+                <div class="notifications-list">
+                    {% for notification in notifications %}
+                        <div class="notification-card {{ notification.notification_type }} {% if not notification.is_read %}unread{% endif %}">
+                            <div class="notification-header">
+                                <h3>{{ notification.title }}</h3>
+                                <span class="notification-date">{{ notification.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                            </div>
+                            <p class="notification-message">{{ notification.message }}</p>
+                            <div class="notification-footer">
+                                <span class="notification-type">{{ notification.notification_type }}</span>
+                                {% if not notification.is_read %}
+                                    <span class="unread-badge">Unread</span>
+                                    <form action="{{ url_for('mark_as_read', notification_id=notification.id) }}" method="POST" class="inline-form">
+                                        <button type="submit" class="btn btn-small">Mark as Read</button>
+                                    </form>
+                                {% else %}
+                                    <span class="read-badge">Read</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No notifications yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
