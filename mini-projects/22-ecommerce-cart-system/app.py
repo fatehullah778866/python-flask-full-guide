@@ -175,6 +175,13 @@ def init_cart():
         # - Example: {1: 2, 3: 1} = 2 of product 1, 1 of product 3
         # - This is our shopping cart!
 
+
+def cart_key(product_id):
+    """
+    Normalize a product ID for use as a session dict key.
+    """
+    return str(product_id)
+
 # Step 9: Helper Function to Get Cart Total
 # What is this? Calculating total price of items in cart
 # Think of it like: "Add up all the prices in the shopping cart"
@@ -203,7 +210,7 @@ def get_cart_total():
     
     # Step 12: Loop Through Cart Items
     # What is this? Going through each item in the cart
-    for product_id, quantity in session['cart'].items():
+    for stored_product_id, quantity in session['cart'].items():
         # Explanation:
         # - for product_id, quantity in session['cart'].items() = Loop through cart
         # - .items() = Gets key-value pairs from dictionary
@@ -213,7 +220,7 @@ def get_cart_total():
         
         # Step 13: Get Product Information
         # What is this? Finding the product details
-        product = get_product(product_id)
+        product = get_product(int(stored_product_id))
         # Explanation:
         # - get_product(product_id) = Our helper function
         # - product = Product dictionary (or None if not found)
@@ -346,13 +353,15 @@ def add_to_cart(product_id):
     
     # Step 25: Add Product to Cart
     # What is this? Adding the product to the shopping cart
-    if product_id in session['cart']:
+    cart = session['cart']
+    cart_item_key = cart_key(product_id)
+    if cart_item_key in cart:
         # Explanation:
         # - if product_id in session['cart'] = If product already in cart
         # - Check if this product is already in the cart
         # - Only proceed if product is already in cart
         
-        session['cart'][product_id] += quantity
+        cart[cart_item_key] += quantity
         # Explanation:
         # - session['cart'][product_id] = Current quantity of this product
         # - += quantity = Add to existing quantity
@@ -363,7 +372,7 @@ def add_to_cart(product_id):
         # - else = If product is NOT in cart
         # - This is the first time adding this product
         
-        session['cart'][product_id] = quantity
+        cart[cart_item_key] = quantity
         # Explanation:
         # - session['cart'][product_id] = quantity = Sets quantity
         # - Adds new product to cart with specified quantity
@@ -426,16 +435,16 @@ def cart():
     
     # Step 32: Loop Through Cart Items
     # What is this? Going through each item in the cart
-    for product_id, quantity in session['cart'].items():
+    for stored_product_id, quantity in session['cart'].items():
         # Explanation:
         # - for product_id, quantity in session['cart'].items() = Loop through cart
         # - .items() = Gets key-value pairs from dictionary
         # - product_id = Product ID (key)
         # - quantity = How many of this product (value)
-        
+
         # Step 33: Get Product Information
         # What is this? Finding the product details
-        product = get_product(product_id)
+        product = get_product(int(stored_product_id))
         # Explanation:
         # - get_product(product_id) = Our helper function
         # - product = Product dictionary (or None if not found)
@@ -526,12 +535,14 @@ def update_cart(product_id):
     
     # Step 40: Update or Remove Item
     # What is this? Updating quantity or removing item
+    cart = session['cart']
+    cart_item_key = cart_key(product_id)
     if new_quantity > 0:
         # Explanation:
         # - if new_quantity > 0 = If quantity is greater than 0
         # - User wants to keep the item (just change quantity)
         
-        session['cart'][product_id] = new_quantity
+        cart[cart_item_key] = new_quantity
         # Explanation:
         # - session['cart'][product_id] = new_quantity = Sets new quantity
         # - Updates the quantity for this product
@@ -541,7 +552,7 @@ def update_cart(product_id):
         # - else = If quantity is 0 or less
         # - User wants to remove the item
         
-        del session['cart'][product_id]
+        del cart[cart_item_key]
         # Explanation:
         # - del session['cart'][product_id] = Removes item from cart
         # - Deletes this product from the cart dictionary
@@ -592,16 +603,18 @@ def remove_from_cart(product_id):
     # Explanation:
     # - init_cart() = Our helper function
     # - Creates cart if it doesn't exist
+    cart = session['cart']
+    cart_item_key = cart_key(product_id)
     
     # Step 46: Remove Item from Cart
     # What is this? Deleting the product from cart
-    if product_id in session['cart']:
+    if cart_item_key in cart:
         # Explanation:
         # - if product_id in session['cart'] = If product is in cart
         # - Check if this product exists in cart
         # - Only proceed if product is in cart
         
-        del session['cart'][product_id]
+        del cart[cart_item_key]
         # Explanation:
         # - del session['cart'][product_id] = Removes item from cart
         # - Deletes this product from the cart dictionary
