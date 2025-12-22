@@ -1,0 +1,104 @@
+/* RESTful API - Stylesheet */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.api-info {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.api-info h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.endpoint {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.endpoint:last-child {
+    border-bottom: none;
+}
+
+.endpoint h3 {
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.endpoint p {
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+code {
+    display: block;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    color: #333;
+    overflow-x: auto;
+}
+
+.instructions {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    color: white;
+}
+
+.instructions h2 {
+    margin-bottom: 1rem;
+}
+
+.instructions ol {
+    margin-left: 2rem;
+    margin-top: 1rem;
+}
+
+.instructions li {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    code {
+        font-size: 0.8rem;
+    }
+}
+

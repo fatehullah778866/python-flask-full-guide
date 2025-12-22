@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESTful API - Documentation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 RESTful API Documentation</h1>
+        
+        <div class="api-info">
+            <h2>Available Endpoints</h2>
+            <div class="endpoint">
+                <h3>GET /api/items</h3>
+                <p>Get all items</p>
+                <code>curl http://127.0.0.1:5000/api/items</code>
+            </div>
+            
+            <div class="endpoint">
+                <h3>GET /api/items/&lt;id&gt;</h3>
+                <p>Get single item by ID</p>
+                <code>curl http://127.0.0.1:5000/api/items/1</code>
+            </div>
+            
+            <div class="endpoint">
+                <h3>POST /api/items</h3>
+                <p>Create new item</p>
+                <code>curl -X POST http://127.0.0.1:5000/api/items -H "Content-Type: application/json" -d '{"name": "New Item", "description": "Description"}'</code>
+            </div>
+            
+            <div class="endpoint">
+                <h3>PUT /api/items/&lt;id&gt;</h3>
+                <p>Update item by ID</p>
+                <code>curl -X PUT http://127.0.0.1:5000/api/items/1 -H "Content-Type: application/json" -d '{"name": "Updated Item"}'</code>
+            </div>
+            
+            <div class="endpoint">
+                <h3>DELETE /api/items/&lt;id&gt;</h3>
+                <p>Delete item by ID</p>
+                <code>curl -X DELETE http://127.0.0.1:5000/api/items/1</code>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>How to Test</h2>
+            <ol>
+                <li>Use curl commands in terminal</li>
+                <li>Use Postman or similar API tools</li>
+                <li>Use browser for GET requests</li>
+                <li>Check the response JSON</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
+

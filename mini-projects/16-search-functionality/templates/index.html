@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Functionality</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Search Functionality</h1>
+        
+        <!-- Search Form -->
+        <form action="{{ url_for('index') }}" method="GET" class="search-form">
+            <div class="search-inputs">
+                <input type="text" 
+                       name="q" 
+                       class="search-input"
+                       placeholder="Search by title or description..."
+                       value="{{ query }}">
+                
+                <select name="category" class="category-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                        <option value="{{ category }}" {% if category_filter == category %}selected{% endif %}>
+                            {{ category }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn btn-search">Search</button>
+            </div>
+        </form>
+        
+        <!-- Search Results -->
+        {% if query or category_filter %}
+            <div class="results-info">
+                <p>Found <strong>{{ results|length }}</strong> result(s)
+                {% if query %}
+                    for "<strong>{{ query }}</strong>"
+                {% endif %}
+                {% if category_filter %}
+                    in category "<strong>{{ category_filter }}</strong>"
+                {% endif %}
+                </p>
+            </div>
+        {% endif %}
+        
+        <!-- Results List -->
+        {% if results %}
+            <div class="results-container">
+                {% for item in results %}
+                    <div class="result-item">
+                        <h3>{{ item.title }}</h3>
+                        <span class="category-badge">{{ item.category }}</span>
+                        <p class="description">{{ item.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif query or category_filter %}
+            <div class="no-results">
+                <p>No results found. Try a different search term or category.</p>
+            </div>
+        {% else %}
+            <div class="instructions">
+                <h2>How to Use:</h2>
+                <ol>
+                    <li>Enter a search term in the search box</li>
+                    <li>Optionally select a category to filter</li>
+                    <li>Click "Search" to find matching items</li>
+                    <li>Results will show items matching your search</li>
+                </ol>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+
