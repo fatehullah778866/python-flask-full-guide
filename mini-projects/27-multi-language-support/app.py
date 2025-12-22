@@ -6,7 +6,6 @@
 # Think of it like: "Get Flask tools and translation tools"
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_babel import Babel, gettext, ngettext, format_date, format_datetime
-from flask_babel import lazy_gettext as _l
 from datetime import datetime
 # Explanation:
 # - Flask = The main Flask class
