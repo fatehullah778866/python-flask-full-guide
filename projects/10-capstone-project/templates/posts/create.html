@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Create Post - Capstone Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Create New Post</h1>
+    
+    <form method="POST" class="post-form">
+        {{ form.hidden_tag() }}  <!-- CSRF Token -->
+        
+        <div class="form-group">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-input") }}
+            {% if form.title.errors %}
+                <div class="error-messages">
+                    {% for error in form.title.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-textarea", rows="15") }}
+            {% if form.content.errors %}
+                <div class="error-messages">
+                    {% for error in form.content.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn">{{ form.submit.label.text }}</button>
+            <a href="{{ url_for('posts.list_posts') }}" class="btn secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

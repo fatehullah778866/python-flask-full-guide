@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Capstone Blog{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="{{ url_for('main.index') }}" class="logo">Capstone Blog</a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li><a href="{{ url_for('main.about') }}">About</a></li>
+                <li><a href="{{ url_for('posts.list_posts') }}">All Posts</a></li>
+                {% if session.user_id %}
+                    <li><a href="{{ url_for('posts.create_post') }}">New Post</a></li>
+                    <li><a href="{{ url_for('main.user_profile', username=session.username) }}">Profile</a></li>
+                    <li><span class="username">Hello, {{ session.username }}!</span></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Capstone Blog. All rights reserved.</p>
+            <p class="footer-note">Built with Flask - Complete Application</p>
+        </div>
+    </footer>
+</body>
+</html>
+

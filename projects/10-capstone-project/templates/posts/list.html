@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}All Posts - Capstone Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>All Blog Posts</h1>
+        {% if session.user_id %}
+            <a href="{{ url_for('posts.create_post') }}" class="btn">Create New Post</a>
+        {% endif %}
+    </div>
+    
+    {% if posts %}
+        <div class="posts">
+            {% for post in posts %}
+                <div class="post-card">
+                    <h2><a href="{{ url_for('posts.view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                    <div class="post-meta">
+                        <span class="author">By <a href="{{ url_for('main.user_profile', username=post.author.username) }}">{{ post.author.username }}</a></span>
+                        <span class="date">{{ post.date_created.strftime('%B %d, %Y at %I:%M %p') }}</span>
+                    </div>
+                    <p class="content-preview">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+                    <div class="actions">
+                        <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="btn-small">Read More</a>
+                        {% if session.user_id and post.author_id == session.user_id %}
+                            <a href="{{ url_for('posts.edit_post', post_id=post.id) }}" class="btn-small">Edit</a>
+                            <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <button type="submit" class="btn-small danger">Delete</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-posts">
+            <p>No posts yet!</p>
+            {% if session.user_id %}
+                <a href="{{ url_for('posts.create_post') }}" class="btn">Create First Post</a>
+            {% else %}
+                <p><a href="{{ url_for('auth.register') }}">Register</a> to create posts!</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

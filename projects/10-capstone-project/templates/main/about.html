@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}About - Capstone Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="about-content">
+        <h1>About This Application</h1>
+        <p>This is a complete Flask application that demonstrates all the concepts learned throughout the course.</p>
+        
+        <h2>Technologies Used</h2>
+        <ul>
+            <li><strong>Flask</strong> - Web framework</li>
+            <li><strong>SQLAlchemy</strong> - Database ORM</li>
+            <li><strong>Flask-WTF</strong> - Forms and CSRF protection</li>
+            <li><strong>Werkzeug</strong> - Password hashing</li>
+            <li><strong>pytest</strong> - Testing framework</li>
+            <li><strong>Gunicorn</strong> - Production server</li>
+        </ul>
+        
+        <h2>Features Implemented</h2>
+        <ul>
+            <li>Application Factory Pattern</li>
+            <li>Blueprints for code organization</li>
+            <li>User authentication with secure passwords</li>
+            <li>Blog post management (CRUD operations)</li>
+            <li>RESTful API endpoints</li>
+            <li>Security features (CSRF, XSS prevention)</li>
+            <li>Comprehensive testing</li>
+            <li>Production-ready configuration</li>
+        </ul>
+        
+        <h2>Project Structure</h2>
+        <pre>
+app/
+├── __init__.py      # Application factory
+├── models.py        # Database models
+├── config.py        # Configuration
+├── auth/            # Authentication blueprint
+├── main/            # Main pages blueprint
+├── posts/           # Posts blueprint
+└── api/             # API blueprint
+        </pre>
+    </div>
+</div>
+{% endblock %}
+

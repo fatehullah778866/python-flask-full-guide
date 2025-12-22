@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Capstone Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Welcome to Capstone Blog</h1>
+        <p>A complete Flask application demonstrating all learned concepts!</p>
+        {% if not session.user_id %}
+            <a href="{{ url_for('auth.register') }}" class="btn">Get Started</a>
+        {% endif %}
+    </div>
+    
+    <div class="features-section">
+        <h2>Application Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>🔐 User Authentication</h3>
+                <p>Secure registration and login with password hashing</p>
+            </div>
+            <div class="feature-card">
+                <h3>📝 Blog Posts</h3>
+                <p>Create, read, update, and delete blog posts</p>
+            </div>
+            <div class="feature-card">
+                <h3>👤 User Profiles</h3>
+                <p>View user profiles and their posts</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 RESTful API</h3>
+                <p>Complete API for programmatic access</p>
+            </div>
+            <div class="feature-card">
+                <h3>🛡️ Security</h3>
+                <p>CSRF protection, secure sessions, input validation</p>
+            </div>
+            <div class="feature-card">
+                <h3>🧪 Testing</h3>
+                <p>Unit and integration tests included</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="posts-section">
+        <h2>Recent Posts</h2>
+        {% if posts %}
+            <div class="posts">
+                {% for post in posts %}
+                    <div class="post-card">
+                        <h3><a href="{{ url_for('posts.view_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                        <p class="author">By <a href="{{ url_for('main.user_profile', username=post.author.username) }}">{{ post.author.username }}</a></p>
+                        <p class="date">{{ post.date_created.strftime('%B %d, %Y') }}</p>
+                        <p class="content-preview">{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
+                        <a href="{{ url_for('posts.view_post', post_id=post.id) }}" class="btn-small">Read More</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No posts yet. Be the first to <a href="{{ url_for('auth.register') }}">register</a> and create a post!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
