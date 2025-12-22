@@ -1,0 +1,480 @@
+/* Simple To-Do List - Stylesheet */
+/* This file makes our to-do list look beautiful! */
+
+/* Reset and Base Styles */
+/* What is this? Removes default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Explanation:
+   - * = Selects all elements
+   - margin: 0 = No space outside elements
+   - padding: 0 = No space inside elements
+   - box-sizing: border-box = Includes padding/border in width/height
+*/
+
+/* Body Styles */
+/* What is this? Styles for the entire page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* What is this? Font family (what text looks like) */
+    /* Segoe UI = Modern, clean font */
+    
+    line-height: 1.6;
+    /* What is this? Space between lines of text */
+    /* 1.6 = 1.6 times the font size (makes text easier to read) */
+    
+    color: #333;
+    /* What is this? Text color */
+    /* #333 = Dark gray (almost black) */
+    
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* What is this? Background gradient */
+    /* linear-gradient = Smooth color transition */
+    /* Creates a beautiful purple gradient background */
+    
+    min-height: 100vh;
+    /* What is this? Minimum height */
+    /* 100vh = 100% of viewport height (full screen) */
+    
+    padding: 2rem 0;
+    /* What is this? Space above and below body */
+}
+
+/* Container Styles */
+/* What is this? Styles for the main container */
+.container {
+    max-width: 800px;
+    /* What is this? Maximum width */
+    /* 800px = 800 pixels wide */
+    /* Prevents content from being too wide */
+    
+    margin: 0 auto;
+    /* What is this? Centers the container */
+    /* margin: 0 auto = No top/bottom margin, equal left/right (centers) */
+    
+    padding: 2rem;
+    /* What is this? Space inside container */
+    /* 2rem = 2 times root font size (about 32px) */
+}
+
+/* Heading Styles */
+/* What is this? Styles for headings */
+h1 {
+    color: white;
+    /* What is this? White text */
+    
+    text-align: center;
+    /* What is this? Text alignment */
+    /* center = Centers the text */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below heading */
+    
+    font-size: 2.5rem;
+    /* What is this? Font size */
+    /* 2.5rem = 2.5 times root font size (large) */
+    
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* What is this? Text shadow effect */
+    /* Creates depth, makes text stand out */
+}
+
+h2 {
+    color: white;
+    /* What is this? White text */
+    
+    margin-bottom: 1.5rem;
+    /* What is this? Space below heading */
+    
+    font-size: 1.5rem;
+    /* What is this? Font size */
+}
+
+h3 {
+    color: white;
+    /* What is this? White text */
+    
+    margin-top: 2rem;
+    /* What is this? Space above heading */
+    
+    margin-bottom: 1rem;
+    /* What is this? Space below heading */
+}
+
+/* Add Task Form Styles */
+/* What is this? Styles for the add task form */
+.add-task-form {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside form */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    /* 10px = How round the corners are */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* What is this? Shadow effect */
+    /* Creates depth, makes form look elevated */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below form */
+}
+
+.input-group {
+    display: flex;
+    /* What is this? Flexbox layout */
+    /* flex = Flexible box layout */
+    
+    gap: 1rem;
+    /* What is this? Space between input and button */
+}
+
+.task-input {
+    flex: 1;
+    /* What is this? Takes up remaining space */
+    /* flex: 1 = Grows to fill available space */
+    
+    padding: 0.75rem;
+    /* What is this? Space inside input */
+    
+    border: 2px solid #ddd;
+    /* What is this? Border around input */
+    /* 2px = Border thickness */
+    /* solid = Solid line (not dashed) */
+    /* #ddd = Light gray color */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    transition: border-color 0.3s;
+    /* What is this? Smooth color change */
+    /* When border color changes, it animates over 0.3 seconds */
+}
+
+.task-input:focus {
+    outline: none;
+    /* What is this? Removes default browser outline */
+    
+    border-color: #667eea;
+    /* What is this? Purple border when focused */
+    /* :focus = When user clicks in the input */
+}
+
+/* Button Styles */
+/* What is this? Styles for buttons */
+.btn {
+    padding: 0.75rem 1.5rem;
+    /* What is this? Space inside button */
+    /* 0.75rem top/bottom, 1.5rem left/right */
+    
+    border: none;
+    /* What is this? No border */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    cursor: pointer;
+    /* What is this? Pointer cursor on hover */
+    /* Shows hand icon when hovering */
+    
+    font-size: 1rem;
+    /* What is this? Font size */
+    
+    font-weight: bold;
+    /* What is this? Bold text */
+    
+    transition: all 0.3s ease;
+    /* What is this? Smooth animation for all properties */
+    /* all = All CSS properties */
+    /* 0.3s = Animation duration */
+    /* ease = Smooth animation curve */
+}
+
+.btn-add {
+    background-color: #28a745;
+    /* What is this? Green background */
+    
+    color: white;
+    /* What is this? White text */
+}
+
+.btn-add:hover {
+    background-color: #218838;
+    /* What is this? Darker green on hover */
+    /* :hover = When mouse is over button */
+}
+
+.btn-toggle {
+    background-color: #17a2b8;
+    /* What is this? Blue background */
+    
+    color: white;
+    /* What is this? White text */
+}
+
+.btn-toggle:hover {
+    background-color: #138496;
+    /* What is this? Darker blue on hover */
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    /* What is this? Red background */
+    
+    color: white;
+    /* What is this? White text */
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    /* What is this? Darker red on hover */
+}
+
+/* Tasks Container Styles */
+/* What is this? Styles for tasks container */
+.tasks-container {
+    background: white;
+    /* What is this? White background */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* What is this? Shadow effect */
+    
+    margin-bottom: 2rem;
+    /* What is this? Space below */
+}
+
+/* Tasks List Styles */
+/* What is this? Styles for the tasks list */
+.tasks-list {
+    list-style: none;
+    /* What is this? Removes default bullet points */
+    
+    padding: 0;
+    /* What is this? No padding */
+}
+
+.task-item {
+    display: flex;
+    /* What is this? Flexbox layout */
+    
+    align-items: center;
+    /* What is this? Centers items vertically */
+    
+    justify-content: space-between;
+    /* What is this? Space between text and buttons */
+    
+    padding: 1rem;
+    /* What is this? Space inside item */
+    
+    margin-bottom: 0.5rem;
+    /* What is this? Space below item */
+    
+    background: #f8f9fa;
+    /* What is this? Light gray background */
+    
+    border-radius: 5px;
+    /* What is this? Rounded corners */
+    
+    border-left: 4px solid #667eea;
+    /* What is this? Purple left border */
+    
+    transition: all 0.3s ease;
+    /* What is this? Smooth animation */
+}
+
+.task-item:hover {
+    background: #e9ecef;
+    /* What is this? Slightly darker on hover */
+    
+    transform: translateX(5px);
+    /* What is this? Moves slightly to right on hover */
+    /* translateX(5px) = Moves 5 pixels to the right */
+}
+
+.task-item.completed {
+    opacity: 0.6;
+    /* What is this? Makes it semi-transparent */
+    /* 0.6 = 60% opacity (40% transparent) */
+    
+    background: #d4edda;
+    /* What is this? Light green background */
+    
+    border-left-color: #28a745;
+    /* What is this? Green left border */
+}
+
+.task-text {
+    flex: 1;
+    /* What is this? Takes up remaining space */
+    
+    font-size: 1.1rem;
+    /* What is this? Font size */
+    
+    color: #333;
+    /* What is this? Dark gray text */
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    /* What is this? Strikethrough text */
+    /* line-through = Draws line through text */
+    
+    color: #6c757d;
+    /* What is this? Gray text */
+}
+
+/* Task Actions Styles */
+/* What is this? Styles for action buttons */
+.task-actions {
+    display: flex;
+    /* What is this? Flexbox layout */
+    
+    gap: 0.5rem;
+    /* What is this? Space between buttons */
+}
+
+.inline-form {
+    margin: 0;
+    /* What is this? No margin */
+    
+    display: inline;
+    /* What is this? Inline display */
+}
+
+/* Empty State Styles */
+/* What is this? Styles for empty state message */
+.empty-state {
+    text-align: center;
+    /* What is this? Centers content */
+    
+    padding: 3rem;
+    /* What is this? Space inside */
+}
+
+.empty-message {
+    color: #6c757d;
+    /* What is this? Gray text */
+    
+    font-size: 1.2rem;
+    /* What is this? Font size */
+}
+
+/* Instructions Styles */
+/* What is this? Styles for instructions section */
+.instructions {
+    background: rgba(255, 255, 255, 0.1);
+    /* What is this? Semi-transparent white */
+    /* rgba = Red, Green, Blue, Alpha (transparency) */
+    /* 0.1 = 10% opacity (90% transparent) */
+    
+    padding: 2rem;
+    /* What is this? Space inside */
+    
+    border-radius: 10px;
+    /* What is this? Rounded corners */
+    
+    backdrop-filter: blur(10px);
+    /* What is this? Blur effect behind element */
+    /* Creates glass-like effect */
+}
+
+.instructions ul {
+    list-style: none;
+    /* What is this? Removes default bullet points */
+    
+    padding-left: 0;
+    /* What is this? No left padding */
+}
+
+.instructions li {
+    color: white;
+    /* What is this? White text */
+    
+    padding: 0.5rem 0;
+    /* What is this? Space above and below */
+    
+    font-size: 1.1rem;
+    /* What is this? Font size */
+    
+    position: relative;
+    /* What is this? Allows positioning */
+    
+    padding-left: 1.5rem;
+    /* What is this? Space on left for custom bullet */
+}
+
+.instructions li::before {
+    content: "→ ";
+    /* What is this? Arrow before each item */
+    /* ::before = Pseudo-element */
+    
+    color: #ffc107;
+    /* What is this? Yellow color */
+    
+    font-weight: bold;
+    /* What is this? Bold arrow */
+    
+    position: absolute;
+    /* What is this? Positioned absolutely */
+    
+    left: 0;
+    /* What is this? At the left */
+}
+
+/* Responsive Design */
+/* What is this? Makes page work on mobile devices */
+@media (max-width: 768px) {
+    /* What is this? Media query for screens smaller than 768px */
+    /* @media = Applies styles only when condition is true */
+    
+    .container {
+        padding: 1rem;
+        /* What is this? Less padding on mobile */
+    }
+    
+    h1 {
+        font-size: 2rem;
+        /* What is this? Smaller heading on mobile */
+    }
+    
+    .input-group {
+        flex-direction: column;
+        /* What is this? Stacks input and button vertically */
+    }
+    
+    .task-item {
+        flex-direction: column;
+        /* What is this? Stacks task text and buttons vertically */
+        
+        align-items: flex-start;
+        /* What is this? Aligns to left */
+    }
+    
+    .task-actions {
+        width: 100%;
+        /* What is this? Full width buttons */
+        
+        margin-top: 1rem;
+        /* What is this? Space above buttons */
+    }
+    
+    .btn {
+        width: 100%;
+        /* What is this? Full width buttons on mobile */
+    }
+}
+

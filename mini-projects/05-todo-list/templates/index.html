@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- HTML Head Section -->
+    <!-- This section contains information about the page -->
+    <meta charset="UTF-8">
+    <!-- What is this? Character encoding (UTF-8 for most characters) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- What is this? Makes page work on mobile devices -->
+    
+    <title>Simple To-Do List</title>
+    <!-- What is this? The title that appears in the browser tab -->
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- What is this? Links to our CSS stylesheet -->
+    <!-- url_for('static', ...) = Flask function to find static files -->
+</head>
+<body>
+    <!-- HTML Body Section -->
+    <!-- This section contains the visible content of the page -->
+    
+    <div class="container">
+        <!-- What is this? A container div to hold our content -->
+        <!-- div = A box that groups content together -->
+        <!-- class="container" = CSS class for styling -->
+        
+        <h1>📝 Simple To-Do List</h1>
+        <!-- What is this? Main heading -->
+        <!-- h1 = Biggest heading, used for main titles -->
+        
+        <!-- Add Task Form -->
+        <!-- What is this? Form to add new tasks -->
+        <form action="{{ url_for('add_task') }}" method="POST" class="add-task-form">
+            <!-- What is this? HTML form element -->
+            <!-- action = Where to send form data (the route) -->
+            <!-- url_for('add_task') = Flask function to generate URL for 'add_task' route -->
+            <!-- method="POST" = Send data securely (not in URL) -->
+            <!-- class="add-task-form" = CSS class for styling -->
+            
+            <div class="input-group">
+                <!-- What is this? Group for input and button -->
+                <!-- div = Container for form elements -->
+                <!-- class="input-group" = CSS class for styling -->
+                
+                <input type="text" 
+                       name="task" 
+                       placeholder="Enter a new task..." 
+                       class="task-input"
+                       required>
+                <!-- What is this? Text input field for task -->
+                <!-- type="text" = Text input (not number, email, etc.) -->
+                <!-- name="task" = Name of the data when form is submitted -->
+                <!-- This is what we'll get in Python: request.form.get('task') -->
+                <!-- placeholder="..." = Hint text inside the input -->
+                <!-- class="task-input" = CSS class for styling -->
+                <!-- required = User must fill this in before submitting -->
+                
+                <button type="submit" class="btn btn-add">Add Task</button>
+                <!-- What is this? Submit button -->
+                <!-- type="submit" = Button that submits the form -->
+                <!-- class="btn btn-add" = CSS classes for styling -->
+                <!-- When clicked, form is submitted to /add route -->
+                
+            </div>
+            <!-- What is this? Closes the input-group div -->
+            
+        </form>
+        <!-- What is this? Closes the form element -->
+        
+        <!-- Tasks List -->
+        <!-- What is this? Container for displaying all tasks -->
+        <div class="tasks-container">
+            <!-- What is this? Container for tasks -->
+            <!-- div = Box to hold all tasks -->
+            <!-- class="tasks-container" = CSS class for styling -->
+            
+            {% if tasks %}
+            <!-- What is this? Jinja2 conditional -->
+            <!-- {% if tasks %} = If tasks list exists and is not empty -->
+            <!-- Jinja2 = Template engine Flask uses -->
+            <!-- Only show tasks if there are any -->
+            
+                <h2>Your Tasks ({{ tasks|length }})</h2>
+                <!-- What is this? Heading showing number of tasks -->
+                <!-- h2 = Second level heading -->
+                <!-- {{ tasks|length }} = Jinja2 filter to get list length -->
+                <!-- |length = Filter that returns number of items -->
+                <!-- Shows: "Your Tasks (3)" if there are 3 tasks -->
+                
+                <ul class="tasks-list">
+                    <!-- What is this? Unordered list for tasks -->
+                    <!-- ul = Unordered list (bullet points) -->
+                    <!-- class="tasks-list" = CSS class for styling -->
+                    
+                    {% for task in tasks %}
+                    <!-- What is this? Jinja2 loop -->
+                    <!-- {% for task in tasks %} = Loop through each task -->
+                    <!-- task = Current task in the loop -->
+                    <!-- tasks = List of tasks from Python -->
+                    <!-- This will repeat for each task in the list -->
+                    
+                        <li class="task-item {% if task.completed %}completed{% endif %}">
+                            <!-- What is this? List item for each task -->
+                            <!-- li = List item -->
+                            <!-- class="task-item" = CSS class for task styling -->
+                            <!-- {% if task.completed %}completed{% endif %} = Conditional class -->
+                            <!-- If task is completed, adds 'completed' class -->
+                            <!-- This allows CSS to style completed tasks differently -->
+                            
+                            <!-- Task Text -->
+                            <span class="task-text">{{ task.text }}</span>
+                            <!-- What is this? Displays the task text -->
+                            <!-- span = Inline container -->
+                            <!-- class="task-text" = CSS class for text styling -->
+                            <!-- {{ task.text }} = Jinja2 syntax to display task text -->
+                            <!-- task.text = The 'text' field from the task dictionary -->
+                            
+                            <!-- Task Actions -->
+                            <div class="task-actions">
+                                <!-- What is this? Container for action buttons -->
+                                <!-- div = Box for buttons -->
+                                <!-- class="task-actions" = CSS class for styling -->
+                                
+                                <!-- Toggle Complete Button -->
+                                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="POST" class="inline-form">
+                                    <!-- What is this? Form to toggle task completion -->
+                                    <!-- action = Where to send form data -->
+                                    <!-- url_for('toggle_task', task_id=task.id) = Generates URL with task ID -->
+                                    <!-- Example: /toggle/0 if task.id is 0 -->
+                                    <!-- method="POST" = POST request -->
+                                    <!-- class="inline-form" = CSS class for inline form styling -->
+                                    
+                                    <button type="submit" class="btn btn-toggle">
+                                        <!-- What is this? Button to toggle completion -->
+                                        <!-- type="submit" = Submits the form -->
+                                        <!-- class="btn btn-toggle" = CSS classes for styling -->
+                                        
+                                        {% if task.completed %}
+                                        <!-- What is this? Conditional display -->
+                                        <!-- {% if task.completed %} = If task is completed -->
+                                        
+                                            ⏪ Mark Incomplete
+                                            <!-- What is this? Button text if completed -->
+                                            <!-- Shows when task is done -->
+                                            
+                                        {% else %}
+                                        <!-- What is this? Else condition -->
+                                        <!-- {% else %} = If task is not completed -->
+                                        
+                                            ✅ Mark Complete
+                                            <!-- What is this? Button text if not completed -->
+                                            <!-- Shows when task is not done -->
+                                            
+                                        {% endif %}
+                                        <!-- What is this? Closes the if statement -->
+                                        <!-- {% endif %} = End of if block -->
+                                        
+                                    </button>
+                                    <!-- What is this? Closes the button element -->
+                                    
+                                </form>
+                                <!-- What is this? Closes the toggle form -->
+                                
+                                <!-- Delete Button -->
+                                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" class="inline-form">
+                                    <!-- What is this? Form to delete task -->
+                                    <!-- action = Where to send form data -->
+                                    <!-- url_for('delete_task', task_id=task.id) = Generates URL with task ID -->
+                                    <!-- Example: /delete/0 if task.id is 0 -->
+                                    <!-- method="POST" = POST request -->
+                                    
+                                    <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this task?');">
+                                        <!-- What is this? Button to delete task -->
+                                        <!-- type="submit" = Submits the form -->
+                                        <!-- class="btn btn-delete" = CSS classes for styling -->
+                                        <!-- onclick = JavaScript confirmation dialog -->
+                                        <!-- confirm() = Shows popup asking user to confirm -->
+                                        <!-- return = Returns true/false (if false, form doesn't submit) -->
+                                        <!-- This prevents accidental deletions -->
+                                        
+                                        🗑️ Delete
+                                        <!-- What is this? Button text -->
+                                        <!-- Delete icon and text -->
+                                        
+                                    </button>
+                                    <!-- What is this? Closes the button element -->
+                                    
+                                </form>
+                                <!-- What is this? Closes the delete form -->
+                                
+                            </div>
+                            <!-- What is this? Closes the task-actions div -->
+                            
+                        </li>
+                        <!-- What is this? Closes the list item -->
+                        
+                    {% endfor %}
+                    <!-- What is this? Closes the for loop -->
+                    <!-- {% endfor %} = End of for loop block -->
+                    
+                </ul>
+                <!-- What is this? Closes the unordered list -->
+                
+            {% else %}
+            <!-- What is this? Else condition -->
+            <!-- {% else %} = If tasks list is empty -->
+            
+                <div class="empty-state">
+                    <!-- What is this? Container for empty state message -->
+                    <!-- div = Box for empty message -->
+                    <!-- class="empty-state" = CSS class for styling -->
+                    
+                    <p class="empty-message">📭 No tasks yet. Add one above to get started!</p>
+                    <!-- What is this? Message when no tasks -->
+                    <!-- p = Paragraph tag -->
+                    <!-- class="empty-message" = CSS class for styling -->
+                    <!-- Shows when tasks list is empty -->
+                    
+                </div>
+                <!-- What is this? Closes the empty-state div -->
+                
+            {% endif %}
+            <!-- What is this? Closes the if statement -->
+            <!-- {% endif %} = End of if block -->
+            
+        </div>
+        <!-- What is this? Closes the tasks-container div -->
+        
+        <!-- Instructions -->
+        <!-- What is this? Section with instructions -->
+        <div class="instructions">
+            <!-- What is this? Container for instructions -->
+            <!-- div = Box for instructions -->
+            <!-- class="instructions" = CSS class for styling -->
+            
+            <h3>How to Use:</h3>
+            <!-- What is this? Instructions heading -->
+            <!-- h3 = Third level heading -->
+            
+            <ul>
+                <!-- What is this? Unordered list for instructions -->
+                <!-- ul = Unordered list -->
+                
+                <li>Enter a task in the input field above</li>
+                <!-- What is this? First instruction -->
+                <!-- li = List item -->
+                
+                <li>Click "Add Task" to add it to your list</li>
+                <!-- What is this? Second instruction -->
+                
+                <li>Click "✅ Mark Complete" to mark a task as done</li>
+                <!-- What is this? Third instruction -->
+                
+                <li>Click "🗑️ Delete" to remove a task</li>
+                <!-- What is this? Fourth instruction -->
+                
+            </ul>
+            <!-- What is this? Closes the unordered list -->
+            
+        </div>
+        <!-- What is this? Closes the instructions div -->
+        
+    </div>
+    <!-- What is this? Closes the container div -->
+</body>
+</html>
+
