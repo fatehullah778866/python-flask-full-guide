@@ -8,6 +8,16 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from celery import Celery
 from celery.result import AsyncResult
 import time
+
+try:
+    import redis  # noqa: F401
+except ModuleNotFoundError as exc:
+    raise RuntimeError(
+        "The redis Python client is missing. "
+        "Install dependencies with "
+        "`pip install -r mini-projects/30-background-job-processor/requirements.txt` "
+        "before running the app."
+    ) from exc
 # Explanation:
 # - Flask = The main Flask class
 # - render_template = Function to display HTML templates
