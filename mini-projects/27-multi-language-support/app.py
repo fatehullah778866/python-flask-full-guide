@@ -5,7 +5,8 @@
 # What is this? We're importing Flask and internationalization tools
 # Think of it like: "Get Flask tools and translation tools"
 from flask import Flask, render_template, request, redirect, url_for, session
-from flask_babel import Babel, gettext as _, ngettext, format_date, format_datetime
+from flask_babel import Babel, gettext, ngettext, format_date, format_datetime
+from flask_babel import lazy_gettext as _l
 from datetime import datetime
 # Explanation:
 # - Flask = The main Flask class
@@ -139,13 +140,14 @@ def index():
     
     # Step 11: Render Template
     # What is this? Showing the HTML page
-    return render_template('index.html', current_datetime=current_datetime, _=_)
+    return render_template('index.html', current_datetime=current_datetime, format_date=format_date, format_datetime=format_datetime)
     # Explanation:
     # - render_template = Displays HTML template
     # - 'index.html' = The template file to display
     # - current_datetime=current_datetime = Passes date/time to template
-    # - _=_ = Passes translation function to template
-    # - Template will use translation functions to display text in correct language
+    # - format_date=format_date = Passes date formatting function
+    # - format_datetime=format_datetime = Passes datetime formatting function
+    # - Template uses {% trans %} tags for translation (Flask-Babel syntax)
 
 # Step 12: Create Set Language Route (POST)
 # What is this? Handles language selection

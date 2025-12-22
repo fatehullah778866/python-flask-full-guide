@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('Multi-language Support') }}</title>
+    <title>{% trans %}Multi-language Support{% endtrans %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌍 {{ _('Multi-language Support') }}</h1>
+            <h1>🌍 {% trans %}Multi-language Support{% endtrans %}</h1>
             <div class="language-selector">
                 <form action="{{ url_for('set_language') }}" method="POST" class="language-form">
                     <select name="language" onchange="this.form.submit()" class="language-select">
@@ -24,38 +24,38 @@
         
         <!-- Welcome Section -->
         <div class="section">
-            <h2>{{ _('Welcome') }}</h2>
-            <p>{{ _('This is a multi-language application. You can switch between different languages using the selector above.') }}</p>
+            <h2>{% trans %}Welcome{% endtrans %}</h2>
+            <p>{% trans %}This is a multi-language application. You can switch between different languages using the selector above.{% endtrans %}</p>
         </div>
         
         <!-- Features Section -->
         <div class="section">
-            <h2>{{ _('Features') }}</h2>
+            <h2>{% trans %}Features{% endtrans %}</h2>
             <ul class="features-list">
-                <li>{{ _('Support for multiple languages') }}</li>
-                <li>{{ _('Easy language switching') }}</li>
-                <li>{{ _('Automatic date/time formatting') }}</li>
-                <li>{{ _('Browser language detection') }}</li>
+                <li>{% trans %}Support for multiple languages{% endtrans %}</li>
+                <li>{% trans %}Easy language switching{% endtrans %}</li>
+                <li>{% trans %}Automatic date/time formatting{% endtrans %}</li>
+                <li>{% trans %}Browser language detection{% endtrans %}</li>
             </ul>
         </div>
         
         <!-- Date/Time Section -->
         <div class="section">
-            <h2>{{ _('Current Date and Time') }}</h2>
+            <h2>{% trans %}Current Date and Time{% endtrans %}</h2>
             <p class="datetime-display">
-                {{ _('Date:') }} {{ format_date(current_datetime) }}<br>
-                {{ _('Time:') }} {{ format_datetime(current_datetime, format='short') }}
+                {% trans %}Date:{% endtrans %} {{ format_date(current_datetime) }}<br>
+                {% trans %}Time:{% endtrans %} {{ format_datetime(current_datetime, format='short') }}
             </p>
         </div>
         
         <!-- Instructions Section -->
         <div class="section">
-            <h2>{{ _('How to Use') }}</h2>
+            <h2>{% trans %}How to Use{% endtrans %}</h2>
             <ol class="instructions-list">
-                <li>{{ _('Select a language from the dropdown menu above') }}</li>
-                <li>{{ _('The page content will update automatically') }}</li>
-                <li>{{ _('Date and time will be formatted according to the selected language') }}</li>
-                <li>{{ _('Your language preference will be saved in the session') }}</li>
+                <li>{% trans %}Select a language from the dropdown menu above{% endtrans %}</li>
+                <li>{% trans %}The page content will update automatically{% endtrans %}</li>
+                <li>{% trans %}Date and time will be formatted according to the selected language{% endtrans %}</li>
+                <li>{% trans %}Your language preference will be saved in the session{% endtrans %}</li>
             </ol>
         </div>
     </div>
